@@ -19,36 +19,12 @@ import ch.qos.logback.classic.Level
 import ch.qos.logback.classic.spi.ILoggingEvent
 import ch.qos.logback.classic.spi.ThrowableProxy
 import com.tyro.oss.logtesting.LogRuleAssert
-import org.assertj.core.error.ShouldBeNullOrEmpty.shouldBeNullOrEmpty
 import org.assertj.core.error.ShouldContainCharSequence.shouldContain
+import org.assertj.core.error.ShouldNotContainCharSequence.shouldNotContain
 import org.assertj.core.util.Objects.areEqual
 import kotlin.reflect.KClass
 
 class LogbackRuleAssert(actual: List<ILoggingEvent>) : LogRuleAssert<LogbackRuleAssert, Level, ILoggingEvent>(actual) {
-
-    override fun hasNoInfo(): LogbackRuleAssert {
-        val events = actual.filter(withLevel(Level.INFO))
-        if (events.isNotEmpty()) {
-            failWithMessage(shouldBeNullOrEmpty(formatLogMessages(events)).create())
-        }
-        return this
-    }
-
-    override fun hasNoWarn(): LogbackRuleAssert {
-        val events = actual.filter(withLevel(Level.WARN))
-        if (events.isNotEmpty()) {
-            failWithMessage(shouldBeNullOrEmpty(formatLogMessages(events)).create())
-        }
-        return this
-    }
-
-    override fun hasNoError(): LogbackRuleAssert {
-        val events = actual.filter(withLevel(Level.ERROR))
-        if (events.isNotEmpty()) {
-            failWithMessage(shouldBeNullOrEmpty(formatLogMessages(events)).create())
-        }
-        return this
-    }
 
     override fun hasInfo(): LogbackRuleAssert =
             hasEvent(Level.INFO)
@@ -83,6 +59,9 @@ class LogbackRuleAssert(actual: List<ILoggingEvent>) : LogRuleAssert<LogbackRule
     override fun hasInfoMatching(regex: Regex, throwableClass: KClass<out Throwable>): LogbackRuleAssert =
             hasEventMatching(Level.INFO, regex, throwableClass)
 
+    override fun hasNoInfo(): LogbackRuleAssert =
+            hasNoEvent(Level.INFO)
+
     override fun hasWarn(): LogbackRuleAssert =
             hasEvent(Level.WARN)
 
@@ -116,6 +95,9 @@ class LogbackRuleAssert(actual: List<ILoggingEvent>) : LogRuleAssert<LogbackRule
     override fun hasWarnMatching(regex: Regex, throwableClass: KClass<out Throwable>): LogbackRuleAssert =
             hasEventMatching(Level.WARN, regex, throwableClass)
 
+    override fun hasNoWarn(): LogbackRuleAssert =
+            hasNoEvent(Level.WARN)
+
     override fun hasError(): LogbackRuleAssert =
             hasEvent(Level.ERROR)
 
@@ -148,6 +130,9 @@ class LogbackRuleAssert(actual: List<ILoggingEvent>) : LogRuleAssert<LogbackRule
 
     override fun hasErrorMatching(regex: Regex, throwableClass: KClass<out Throwable>): LogbackRuleAssert =
             hasEventMatching(Level.ERROR, regex, throwableClass)
+
+    override fun hasNoError(): LogbackRuleAssert =
+            hasNoEvent(Level.ERROR)
 
     override fun hasEvent(level: Level): LogbackRuleAssert =
             hasEvent("[$level]",
@@ -203,9 +188,20 @@ class LogbackRuleAssert(actual: List<ILoggingEvent>) : LogRuleAssert<LogbackRule
     override fun hasEventMatching(level: Level, regex: Regex, throwableClass: KClass<out Throwable>): LogbackRuleAssert =
             hasEventMatching(level, regex, throwableClass.java)
 
+    override fun hasNoEvent(level: Level): LogbackRuleAssert =
+            hasNoEvent("[$level]",
+                    withLevel(level))
+
     private fun hasEvent(description: String, predicate: (ILoggingEvent) -> Boolean): LogbackRuleAssert {
-        if (!actual.any(predicate)) {
+        if (actual.none(predicate)) {
             failWithMessage(shouldContain(formatLogMessages(actual).replace("%", "%%"), description.replace("%", "%%")).create())
+        }
+        return this
+    }
+
+    private fun hasNoEvent(description: String, predicate: (ILoggingEvent) -> Boolean): LogbackRuleAssert {
+        if (actual.any(predicate)) {
+            failWithMessage(shouldNotContain(formatLogMessages(actual).replace("%", "%%"), description.replace("%", "%%")).create())
         }
         return this
     }

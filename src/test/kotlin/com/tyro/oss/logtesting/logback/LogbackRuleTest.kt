@@ -74,7 +74,10 @@ class LogbackRuleTest {
 
         assertThatThrownBy { assertThat(log).hasNoInfo() }
                 .isInstanceOf(AssertionError::class.java)
-                .hasMessageContaining("\nExpecting null or empty but was:<")
+                .hasMessage("\nExpecting:\n"
+                        + " <\"[INFO] test message\">\n"
+                        + "not to contain:\n"
+                        + " <\"[INFO]\"> ")
     }
 
     @Test
@@ -85,7 +88,10 @@ class LogbackRuleTest {
 
         assertThatThrownBy { assertThat(log).hasNoWarn() }
                 .isInstanceOf(AssertionError::class.java)
-                .hasMessageContaining("\nExpecting null or empty but was:<")
+                .hasMessage("\nExpecting:\n"
+                        + " <\"[WARN] test message\">\n"
+                        + "not to contain:\n"
+                        + " <\"[WARN]\"> ")
     }
 
     @Test
@@ -96,7 +102,10 @@ class LogbackRuleTest {
 
         assertThatThrownBy { assertThat(log).hasNoError() }
                 .isInstanceOf(AssertionError::class.java)
-                .hasMessageContaining("\nExpecting null or empty but was:<")
+                .hasMessage("\nExpecting:\n"
+                        + " <\"[ERROR] test message\">\n"
+                        + "not to contain:\n"
+                        + " <\"[ERROR]\"> ")
     }
 
     @Test

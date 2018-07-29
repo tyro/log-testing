@@ -18,36 +18,12 @@ package com.tyro.oss.logtesting.log4j
 import com.tyro.oss.logtesting.LogRuleAssert
 import org.apache.log4j.Level
 import org.apache.log4j.spi.LoggingEvent
-import org.assertj.core.error.ShouldBeNullOrEmpty.shouldBeNullOrEmpty
 import org.assertj.core.error.ShouldContainCharSequence.shouldContain
+import org.assertj.core.error.ShouldNotContainCharSequence.shouldNotContain
 import org.assertj.core.util.Objects.areEqual
 import kotlin.reflect.KClass
 
 class Log4jRuleAssert(actual: List<LoggingEvent>) : LogRuleAssert<Log4jRuleAssert, Level, LoggingEvent>(actual) {
-
-    override fun hasNoInfo(): Log4jRuleAssert {
-        val events = actual.filter(withLevel(Level.INFO))
-        if (events.isNotEmpty()) {
-            failWithMessage(shouldBeNullOrEmpty(formatLogMessages(events)).create())
-        }
-        return this
-    }
-
-    override fun hasNoWarn(): Log4jRuleAssert {
-        val events = actual.filter(withLevel(Level.WARN))
-        if (events.isNotEmpty()) {
-            failWithMessage(shouldBeNullOrEmpty(formatLogMessages(events)).create())
-        }
-        return this
-    }
-
-    override fun hasNoError(): Log4jRuleAssert {
-        val events = actual.filter(withLevel(Level.ERROR))
-        if (events.isNotEmpty()) {
-            failWithMessage(shouldBeNullOrEmpty(formatLogMessages(events)).create())
-        }
-        return this
-    }
 
     override fun hasInfo(): Log4jRuleAssert =
             hasEvent(Level.INFO)
@@ -82,6 +58,9 @@ class Log4jRuleAssert(actual: List<LoggingEvent>) : LogRuleAssert<Log4jRuleAsser
     override fun hasInfoMatching(regex: Regex, throwableClass: KClass<out Throwable>): Log4jRuleAssert =
             hasEventMatching(Level.INFO, regex, throwableClass)
 
+    override fun hasNoInfo(): Log4jRuleAssert =
+            hasNoEvent(Level.INFO)
+
     override fun hasWarn(): Log4jRuleAssert =
             hasEvent(Level.WARN)
 
@@ -115,6 +94,9 @@ class Log4jRuleAssert(actual: List<LoggingEvent>) : LogRuleAssert<Log4jRuleAsser
     override fun hasWarnMatching(regex: Regex, throwableClass: KClass<out Throwable>): Log4jRuleAssert =
             hasEventMatching(Level.WARN, regex, throwableClass)
 
+    override fun hasNoWarn(): Log4jRuleAssert =
+            hasNoEvent(Level.WARN)
+
     override fun hasError(): Log4jRuleAssert =
             hasEvent(Level.ERROR)
 
@@ -147,6 +129,9 @@ class Log4jRuleAssert(actual: List<LoggingEvent>) : LogRuleAssert<Log4jRuleAsser
 
     override fun hasErrorMatching(regex: Regex, throwableClass: KClass<out Throwable>): Log4jRuleAssert =
             hasEventMatching(Level.ERROR, regex, throwableClass.java)
+
+    override fun hasNoError(): Log4jRuleAssert =
+            hasNoEvent(Level.ERROR)
 
     override fun hasEvent(level: Level): Log4jRuleAssert =
             hasEvent("[$level]",
@@ -202,9 +187,20 @@ class Log4jRuleAssert(actual: List<LoggingEvent>) : LogRuleAssert<Log4jRuleAsser
     override fun hasEventMatching(level: Level, regex: Regex, throwableClass: KClass<out Throwable>): Log4jRuleAssert =
             hasEventMatching(level, regex, throwableClass.java)
 
+    override fun hasNoEvent(level: Level): Log4jRuleAssert =
+            hasNoEvent("[$level]",
+                    withLevel(level))
+
     private fun hasEvent(description: String, predicate: (LoggingEvent) -> Boolean): Log4jRuleAssert {
         if (!actual.any(predicate)) {
             failWithMessage(shouldContain(formatLogMessages(actual).replace("%", "%%"), description.replace("%", "%%")).create())
+        }
+        return this
+    }
+
+    private fun hasNoEvent(description: String, predicate: (LoggingEvent) -> Boolean): Log4jRuleAssert {
+        if (actual.any(predicate)) {
+            failWithMessage(shouldNotContain(formatLogMessages(actual).replace("%", "%%"), description.replace("%", "%%")).create())
         }
         return this
     }
