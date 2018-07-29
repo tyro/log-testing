@@ -81,6 +81,20 @@ class LogbackRuleTest {
     }
 
     @Test
+    fun shouldAssertNoInfoEventWithMessage() {
+        assertThat(log).hasNoInfo("test message")
+
+        LOG.info("test message")
+
+        assertThatThrownBy { assertThat(log).hasNoInfo("test message") }
+                .isInstanceOf(AssertionError::class.java)
+                .hasMessage("\nExpecting:\n"
+                        + " <\"[INFO] test message\">\n"
+                        + "not to contain:\n"
+                        + " <\"[INFO] test message\"> ")
+    }
+
+    @Test
     fun shouldAssertNoWarnEvents() {
         assertThat(log).hasNoWarn()
 
@@ -95,6 +109,20 @@ class LogbackRuleTest {
     }
 
     @Test
+    fun shouldAssertNoWarnEventWithMessage() {
+        assertThat(log).hasNoWarn("test message")
+
+        LOG.warn("test message")
+
+        assertThatThrownBy { assertThat(log).hasNoWarn("test message") }
+                .isInstanceOf(AssertionError::class.java)
+                .hasMessage("\nExpecting:\n"
+                        + " <\"[WARN] test message\">\n"
+                        + "not to contain:\n"
+                        + " <\"[WARN] test message\"> ")
+    }
+
+    @Test
     fun shouldAssertNoErrorEvents() {
         assertThat(log).hasNoError()
 
@@ -106,6 +134,20 @@ class LogbackRuleTest {
                         + " <\"[ERROR] test message\">\n"
                         + "not to contain:\n"
                         + " <\"[ERROR]\"> ")
+    }
+
+    @Test
+    fun shouldAssertNoErrorEventWithMessage() {
+        assertThat(log).hasNoError("test message")
+
+        LOG.error("test message")
+
+        assertThatThrownBy { assertThat(log).hasNoError("test message") }
+                .isInstanceOf(AssertionError::class.java)
+                .hasMessage("\nExpecting:\n"
+                        + " <\"[ERROR] test message\">\n"
+                        + "not to contain:\n"
+                        + " <\"[ERROR] test message\"> ")
     }
 
     @Test

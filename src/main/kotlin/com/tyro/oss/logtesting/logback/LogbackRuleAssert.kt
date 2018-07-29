@@ -62,6 +62,9 @@ class LogbackRuleAssert(actual: List<ILoggingEvent>) : LogRuleAssert<LogbackRule
     override fun hasNoInfo(): LogbackRuleAssert =
             hasNoEvent(Level.INFO)
 
+    override fun hasNoInfo(message: String): LogbackRuleAssert =
+            hasNoEvent(Level.INFO, message)
+
     override fun hasWarn(): LogbackRuleAssert =
             hasEvent(Level.WARN)
 
@@ -98,6 +101,9 @@ class LogbackRuleAssert(actual: List<ILoggingEvent>) : LogRuleAssert<LogbackRule
     override fun hasNoWarn(): LogbackRuleAssert =
             hasNoEvent(Level.WARN)
 
+    override fun hasNoWarn(message: String): LogbackRuleAssert =
+            hasNoEvent(Level.WARN, message)
+
     override fun hasError(): LogbackRuleAssert =
             hasEvent(Level.ERROR)
 
@@ -133,6 +139,9 @@ class LogbackRuleAssert(actual: List<ILoggingEvent>) : LogRuleAssert<LogbackRule
 
     override fun hasNoError(): LogbackRuleAssert =
             hasNoEvent(Level.ERROR)
+
+    override fun hasNoError(message: String): LogbackRuleAssert =
+            hasNoEvent(Level.ERROR, message)
 
     override fun hasEvent(level: Level): LogbackRuleAssert =
             hasEvent("[$level]",
@@ -191,6 +200,11 @@ class LogbackRuleAssert(actual: List<ILoggingEvent>) : LogRuleAssert<LogbackRule
     override fun hasNoEvent(level: Level): LogbackRuleAssert =
             hasNoEvent("[$level]",
                     withLevel(level))
+
+    override fun hasNoEvent(level: Level, message: String): LogbackRuleAssert =
+            hasNoEvent(formatLogMessage(level, message)) {
+                withLevel(level)(it)
+                    && withMessage(message)(it) }
 
     private fun hasEvent(description: String, predicate: (ILoggingEvent) -> Boolean): LogbackRuleAssert {
         if (actual.none(predicate)) {
