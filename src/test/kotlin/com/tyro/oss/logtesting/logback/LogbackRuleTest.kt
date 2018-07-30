@@ -109,6 +109,20 @@ class LogbackRuleTest {
     }
 
     @Test
+    fun shouldAssertNoInfoEventMatchingMessage() {
+        assertThat(log).hasNoInfoMatching(Regex("test \\w+"))
+
+        LOG.info("test message")
+
+        assertThatThrownBy { assertThat(log).hasNoInfoMatching(Regex("test \\w+")) }
+                .isInstanceOf(AssertionError::class.java)
+                .hasMessage("\nExpecting:\n"
+                        + " <\"[INFO] test message\">\n"
+                        + "not to contain:\n"
+                        + " <\"INFO message matching: test \\w+\"> ")
+    }
+
+    @Test
     fun shouldAssertNoWarnEvents() {
         assertThat(log).hasNoWarn()
 
@@ -150,6 +164,19 @@ class LogbackRuleTest {
                         + " <\"WARN message containing [test, message]\"> ")
     }
 
+    @Test
+    fun shouldAssertNoWarnEventMatchingMessage() {
+        assertThat(log).hasNoWarnMatching(Regex("test \\w+"))
+
+        LOG.warn("test message")
+
+        assertThatThrownBy { assertThat(log).hasNoWarnMatching(Regex("test \\w+")) }
+                .isInstanceOf(AssertionError::class.java)
+                .hasMessage("\nExpecting:\n"
+                        + " <\"[WARN] test message\">\n"
+                        + "not to contain:\n"
+                        + " <\"WARN message matching: test \\w+\"> ")
+    }
 
     @Test
     fun shouldAssertNoErrorEvents() {
@@ -191,6 +218,20 @@ class LogbackRuleTest {
                         + " <\"[ERROR] test message\">\n"
                         + "not to contain:\n"
                         + " <\"ERROR message containing [test, message]\"> ")
+    }
+
+    @Test
+    fun shouldAssertNoErrorEventMatchingMessage() {
+        assertThat(log).hasNoErrorMatching(Regex("test \\w+"))
+
+        LOG.error("test message")
+
+        assertThatThrownBy { assertThat(log).hasNoErrorMatching(Regex("test \\w+")) }
+                .isInstanceOf(AssertionError::class.java)
+                .hasMessage("\nExpecting:\n"
+                        + " <\"[ERROR] test message\">\n"
+                        + "not to contain:\n"
+                        + " <\"ERROR message matching: test \\w+\"> ")
     }
 
     @Test

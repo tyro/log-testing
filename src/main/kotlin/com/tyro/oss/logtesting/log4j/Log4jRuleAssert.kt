@@ -67,6 +67,9 @@ class Log4jRuleAssert(actual: List<LoggingEvent>) : LogRuleAssert<Log4jRuleAsser
     override fun hasNoInfoContaining(vararg messages: String): Log4jRuleAssert =
             hasNoEventContaining(Level.INFO, *messages)
 
+    override fun hasNoInfoMatching(regex: Regex): Log4jRuleAssert =
+            hasNoEventMatching(Level.INFO, regex)
+
     override fun hasWarn(): Log4jRuleAssert =
             hasEvent(Level.WARN)
 
@@ -109,6 +112,9 @@ class Log4jRuleAssert(actual: List<LoggingEvent>) : LogRuleAssert<Log4jRuleAsser
     override fun hasNoWarnContaining(vararg messages: String): Log4jRuleAssert =
             hasNoEventContaining(Level.WARN, *messages)
 
+    override fun hasNoWarnMatching(regex: Regex): Log4jRuleAssert =
+            hasNoEventMatching(Level.WARN, regex)
+
     override fun hasError(): Log4jRuleAssert =
             hasEvent(Level.ERROR)
 
@@ -150,6 +156,9 @@ class Log4jRuleAssert(actual: List<LoggingEvent>) : LogRuleAssert<Log4jRuleAsser
 
     override fun hasNoErrorContaining(vararg messages: String): Log4jRuleAssert =
             hasNoEventContaining(Level.ERROR, *messages)
+
+    override fun hasNoErrorMatching(regex: Regex): Log4jRuleAssert =
+            hasNoEventMatching(Level.ERROR, regex)
 
     override fun hasEvent(level: Level): Log4jRuleAssert =
             hasEvent("[$level]",
@@ -218,6 +227,11 @@ class Log4jRuleAssert(actual: List<LoggingEvent>) : LogRuleAssert<Log4jRuleAsser
             hasNoEvent("$level message containing ${messages.contentToString()}") {
                 withLevel(level)(it)
                     && withMessageContaining(messages)(it) }
+
+    override fun hasNoEventMatching(level: Level, regex: Regex): Log4jRuleAssert =
+            hasNoEvent("$level message matching: $regex") {
+                withLevel(level)(it)
+                    && withMessageMatching(regex)(it) }
 
     private fun hasEvent(description: String, predicate: (LoggingEvent) -> Boolean): Log4jRuleAssert {
         if (!actual.any(predicate)) {

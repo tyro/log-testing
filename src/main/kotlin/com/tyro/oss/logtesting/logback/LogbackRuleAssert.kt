@@ -68,6 +68,9 @@ class LogbackRuleAssert(actual: List<ILoggingEvent>) : LogRuleAssert<LogbackRule
     override fun hasNoInfoContaining(vararg messages: String): LogbackRuleAssert =
             hasNoEventContaining(Level.INFO, *messages)
 
+    override fun hasNoInfoMatching(regex: Regex): LogbackRuleAssert =
+            hasNoEventMatching(Level.INFO, regex)
+
     override fun hasWarn(): LogbackRuleAssert =
             hasEvent(Level.WARN)
 
@@ -110,6 +113,9 @@ class LogbackRuleAssert(actual: List<ILoggingEvent>) : LogRuleAssert<LogbackRule
     override fun hasNoWarnContaining(vararg messages: String): LogbackRuleAssert =
             hasNoEventContaining(Level.WARN, *messages)
 
+    override fun hasNoWarnMatching(regex: Regex): LogbackRuleAssert =
+            hasNoEventMatching(Level.WARN, regex)
+
     override fun hasError(): LogbackRuleAssert =
             hasEvent(Level.ERROR)
 
@@ -151,6 +157,9 @@ class LogbackRuleAssert(actual: List<ILoggingEvent>) : LogRuleAssert<LogbackRule
 
     override fun hasNoErrorContaining(vararg messages: String): LogbackRuleAssert =
             hasNoEventContaining(Level.ERROR, *messages)
+
+    override fun hasNoErrorMatching(regex: Regex): LogbackRuleAssert =
+            hasNoEventMatching(Level.ERROR, regex)
 
     override fun hasEvent(level: Level): LogbackRuleAssert =
             hasEvent("[$level]",
@@ -219,6 +228,11 @@ class LogbackRuleAssert(actual: List<ILoggingEvent>) : LogRuleAssert<LogbackRule
             hasNoEvent("$level message containing ${messages.contentToString()}") {
                 withLevel(level)(it)
                     && withMessageContaining(messages)(it) }
+
+    override fun hasNoEventMatching(level: Level, regex: Regex): LogbackRuleAssert =
+            hasNoEvent("$level message matching: $regex") {
+                withLevel(level)(it)
+                    && withMessageMatching(regex)(it) }
 
     private fun hasEvent(description: String, predicate: (ILoggingEvent) -> Boolean): LogbackRuleAssert {
         if (actual.none(predicate)) {
