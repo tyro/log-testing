@@ -95,6 +95,20 @@ class LogbackRuleTest {
     }
 
     @Test
+    fun shouldAssertNoInfoEventContainingMessages() {
+        assertThat(log).hasNoInfoContaining("test", "message")
+
+        LOG.info("test message")
+
+        assertThatThrownBy { assertThat(log).hasNoInfoContaining("test", "message") }
+                .isInstanceOf(AssertionError::class.java)
+                .hasMessage("\nExpecting:\n"
+                        + " <\"[INFO] test message\">\n"
+                        + "not to contain:\n"
+                        + " <\"INFO message containing [test, message]\"> ")
+    }
+
+    @Test
     fun shouldAssertNoWarnEvents() {
         assertThat(log).hasNoWarn()
 
@@ -123,6 +137,21 @@ class LogbackRuleTest {
     }
 
     @Test
+    fun shouldAssertNoWarnEventContainingMessages() {
+        assertThat(log).hasNoWarnContaining("test", "message")
+
+        LOG.warn("test message")
+
+        assertThatThrownBy { assertThat(log).hasNoWarnContaining("test", "message") }
+                .isInstanceOf(AssertionError::class.java)
+                .hasMessage("\nExpecting:\n"
+                        + " <\"[WARN] test message\">\n"
+                        + "not to contain:\n"
+                        + " <\"WARN message containing [test, message]\"> ")
+    }
+
+
+    @Test
     fun shouldAssertNoErrorEvents() {
         assertThat(log).hasNoError()
 
@@ -148,6 +177,20 @@ class LogbackRuleTest {
                         + " <\"[ERROR] test message\">\n"
                         + "not to contain:\n"
                         + " <\"[ERROR] test message\"> ")
+    }
+
+    @Test
+    fun shouldAssertNoErrorEventContainingMessages() {
+        assertThat(log).hasNoErrorContaining("test", "message")
+
+        LOG.error("test message")
+
+        assertThatThrownBy { assertThat(log).hasNoErrorContaining("test", "message") }
+                .isInstanceOf(AssertionError::class.java)
+                .hasMessage("\nExpecting:\n"
+                        + " <\"[ERROR] test message\">\n"
+                        + "not to contain:\n"
+                        + " <\"ERROR message containing [test, message]\"> ")
     }
 
     @Test
