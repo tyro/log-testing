@@ -18,6 +18,7 @@ package com.tyro.oss.logtesting.log4j
 import com.tyro.oss.logtesting.LogRuleAssert
 import org.apache.log4j.Level
 import org.apache.log4j.spi.LoggingEvent
+import org.assertj.core.api.Assertions.registerFormatterForType
 import org.assertj.core.error.ShouldContainCharSequence.shouldContain
 import org.assertj.core.error.ShouldNotContainCharSequence.shouldNotContain
 import org.assertj.core.util.Objects.areEqual
@@ -268,15 +269,18 @@ class Log4jRuleAssert(actual: List<LoggingEvent>) : LogRuleAssert<Log4jRuleAsser
     private fun formatLogMessages(events: List<LoggingEvent>): String =
             events.joinToString("\n") { formatLogMessage(it.getLevel(), it.renderedMessage) }
 
-    private fun formatLogMessage(level: Level, message: String = ""): String =
-            "[$level] $message"
-
     companion object {
+
+        init {
+            registerFormatterForType(LoggingEvent::class.java) { formatLogMessage(it.getLevel(), it.renderedMessage) }
+        }
 
         @JvmStatic
         fun assertThat(events: List<LoggingEvent>): Log4jRuleAssert = Log4jRuleAssert(events)
 
         @JvmStatic
         fun assertThat(rule: Log4jRule): Log4jRuleAssert = assertThat(rule.events)
+
+        private fun formatLogMessage(level: Level, message: String = "") = "[$level] $message"
     }
 }
