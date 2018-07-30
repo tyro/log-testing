@@ -62,6 +62,9 @@ class Log4jRuleAssert(actual: List<LoggingEvent>) : LogRuleAssert<Log4jRuleAsser
     override fun hasNoInfo(): Log4jRuleAssert =
             hasNoEvent(Level.INFO)
 
+    override fun hasNoInfo(predicate: (LoggingEvent) -> Boolean): Log4jRuleAssert =
+            hasNoEvent(Level.INFO, predicate)
+
     override fun hasNoInfo(message: String): Log4jRuleAssert =
             hasNoEvent(Level.INFO, message)
 
@@ -107,6 +110,9 @@ class Log4jRuleAssert(actual: List<LoggingEvent>) : LogRuleAssert<Log4jRuleAsser
     override fun hasNoWarn(): Log4jRuleAssert =
             hasNoEvent(Level.WARN)
 
+    override fun hasNoWarn(predicate: (LoggingEvent) -> Boolean): Log4jRuleAssert =
+            hasNoEvent(Level.WARN, predicate)
+
     override fun hasNoWarn(message: String): Log4jRuleAssert =
             hasNoEvent(Level.WARN, message)
 
@@ -151,6 +157,9 @@ class Log4jRuleAssert(actual: List<LoggingEvent>) : LogRuleAssert<Log4jRuleAsser
 
     override fun hasNoError(): Log4jRuleAssert =
             hasNoEvent(Level.ERROR)
+
+    override fun hasNoError(predicate: (LoggingEvent) -> Boolean): Log4jRuleAssert =
+            hasNoEvent(Level.ERROR, predicate)
 
     override fun hasNoError(message: String): Log4jRuleAssert =
             hasNoEvent(Level.ERROR, message)
@@ -218,6 +227,11 @@ class Log4jRuleAssert(actual: List<LoggingEvent>) : LogRuleAssert<Log4jRuleAsser
     override fun hasNoEvent(level: Level): Log4jRuleAssert =
             hasNoEvent("[$level]",
                     withLevel(level))
+
+    override fun hasNoEvent(level: Level, predicate: (LoggingEvent) -> Boolean): Log4jRuleAssert =
+            hasNoEvent("$level event matching given predicate") {
+                withLevel(level)(it)
+                    && predicate(it) }
 
     override fun hasNoEvent(level: Level, message: String): Log4jRuleAssert =
             hasNoEvent(formatLogMessage(level, message)) {

@@ -81,6 +81,20 @@ class Log4jRuleTest {
     }
 
     @Test
+    fun shouldAssertNoInfoEventsMatchingPredicate() {
+        assertThat(log).hasNoInfo { it.renderedMessage.startsWith("test") }
+
+        LOG.info("test message")
+
+        assertThatThrownBy { assertThat(log).hasNoInfo { it.renderedMessage.startsWith("test") } }
+                .isInstanceOf(AssertionError::class.java)
+                .hasMessage("\nExpecting:\n"
+                        + " <\"[INFO] test message\">\n"
+                        + "not to contain:\n"
+                        + " <\"INFO event matching given predicate\"> ")
+    }
+
+    @Test
     fun shouldAssertNoInfoEventWithMessage() {
         assertThat(log).hasNoInfo("test message")
 
@@ -137,6 +151,20 @@ class Log4jRuleTest {
     }
 
     @Test
+    fun shouldAssertNoWarnEventsMatchingPredicate() {
+        assertThat(log).hasNoWarn { it.renderedMessage.startsWith("test") }
+
+        LOG.warn("test message")
+
+        assertThatThrownBy { assertThat(log).hasNoWarn { it.renderedMessage.startsWith("test") } }
+                .isInstanceOf(AssertionError::class.java)
+                .hasMessage("\nExpecting:\n"
+                        + " <\"[WARN] test message\">\n"
+                        + "not to contain:\n"
+                        + " <\"WARN event matching given predicate\"> ")
+    }
+
+    @Test
     fun shouldAssertNoWarnEventWithMessage() {
         assertThat(log).hasNoWarn("test message")
 
@@ -190,6 +218,20 @@ class Log4jRuleTest {
                         + " <\"[ERROR] test message\">\n"
                         + "not to contain:\n"
                         + " <\"[ERROR]\"> ")
+    }
+
+    @Test
+    fun shouldAssertNoErrorEventsMatchingPredicate() {
+        assertThat(log).hasNoError { it.renderedMessage.startsWith("test") }
+
+        LOG.error("test message")
+
+        assertThatThrownBy { assertThat(log).hasNoError { it.renderedMessage.startsWith("test") } }
+                .isInstanceOf(AssertionError::class.java)
+                .hasMessage("\nExpecting:\n"
+                        + " <\"[ERROR] test message\">\n"
+                        + "not to contain:\n"
+                        + " <\"ERROR event matching given predicate\"> ")
     }
 
     @Test
