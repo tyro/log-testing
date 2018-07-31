@@ -52,7 +52,7 @@ class LogbackRuleTest {
 
         assertThatThrownBy { assertThat(log).hasSize(4) }
                 .isInstanceOf(AssertionError::class.java)
-                .hasMessageContaining("\nExpected size:<4> but was:<3> in:")
+                .hasMessageContaining("\nExpected size:<4> but was:<3> in:\n<[[INFO] test message 1, [INFO] test message 2, [INFO] test message 3]>")
     }
 
     @Test
@@ -63,7 +63,7 @@ class LogbackRuleTest {
 
         assertThatThrownBy { assertThat(log).isEmpty() }
                 .isInstanceOf(AssertionError::class.java)
-                .hasMessageContaining("\nExpecting empty but was:<")
+                .hasMessageContaining("\nExpecting empty but was:<[[INFO] test message]>")
     }
 
     @Test
@@ -74,7 +74,66 @@ class LogbackRuleTest {
 
         assertThatThrownBy { assertThat(log).hasNoInfo() }
                 .isInstanceOf(AssertionError::class.java)
-                .hasMessageContaining("\nExpecting null or empty but was:<")
+                .hasMessage("\nExpecting:\n"
+                        + " <\"[INFO] test message\">\n"
+                        + "not to contain:\n"
+                        + " <\"[INFO]\"> ")
+    }
+
+    @Test
+    fun shouldAssertNoInfoEventsMatchingPredicate() {
+        assertThat(log).hasNoInfo { it.formattedMessage.startsWith("test") }
+
+        LOG.info("test message")
+
+        assertThatThrownBy { assertThat(log).hasNoInfo { it.formattedMessage.startsWith("test") } }
+                .isInstanceOf(AssertionError::class.java)
+                .hasMessage("\nExpecting:\n"
+                        + " <\"[INFO] test message\">\n"
+                        + "not to contain:\n"
+                        + " <\"INFO event matching given predicate\"> ")
+    }
+
+    @Test
+    fun shouldAssertNoInfoEventWithMessage() {
+        assertThat(log).hasNoInfo("test message")
+
+        LOG.info("test message")
+
+        assertThatThrownBy { assertThat(log).hasNoInfo("test message") }
+                .isInstanceOf(AssertionError::class.java)
+                .hasMessage("\nExpecting:\n"
+                        + " <\"[INFO] test message\">\n"
+                        + "not to contain:\n"
+                        + " <\"[INFO] test message\"> ")
+    }
+
+    @Test
+    fun shouldAssertNoInfoEventContainingMessages() {
+        assertThat(log).hasNoInfoContaining("test", "message")
+
+        LOG.info("test message")
+
+        assertThatThrownBy { assertThat(log).hasNoInfoContaining("test", "message") }
+                .isInstanceOf(AssertionError::class.java)
+                .hasMessage("\nExpecting:\n"
+                        + " <\"[INFO] test message\">\n"
+                        + "not to contain:\n"
+                        + " <\"INFO message containing [test, message]\"> ")
+    }
+
+    @Test
+    fun shouldAssertNoInfoEventMatchingMessage() {
+        assertThat(log).hasNoInfoMatching(Regex("test \\w+"))
+
+        LOG.info("test message")
+
+        assertThatThrownBy { assertThat(log).hasNoInfoMatching(Regex("test \\w+")) }
+                .isInstanceOf(AssertionError::class.java)
+                .hasMessage("\nExpecting:\n"
+                        + " <\"[INFO] test message\">\n"
+                        + "not to contain:\n"
+                        + " <\"INFO message matching: test \\w+\"> ")
     }
 
     @Test
@@ -85,7 +144,66 @@ class LogbackRuleTest {
 
         assertThatThrownBy { assertThat(log).hasNoWarn() }
                 .isInstanceOf(AssertionError::class.java)
-                .hasMessageContaining("\nExpecting null or empty but was:<")
+                .hasMessage("\nExpecting:\n"
+                        + " <\"[WARN] test message\">\n"
+                        + "not to contain:\n"
+                        + " <\"[WARN]\"> ")
+    }
+
+    @Test
+    fun shouldAssertNoWarnEventsMatchingPredicate() {
+        assertThat(log).hasNoWarn { it.formattedMessage.startsWith("test") }
+
+        LOG.warn("test message")
+
+        assertThatThrownBy { assertThat(log).hasNoWarn { it.formattedMessage.startsWith("test") } }
+                .isInstanceOf(AssertionError::class.java)
+                .hasMessage("\nExpecting:\n"
+                        + " <\"[WARN] test message\">\n"
+                        + "not to contain:\n"
+                        + " <\"WARN event matching given predicate\"> ")
+    }
+
+    @Test
+    fun shouldAssertNoWarnEventWithMessage() {
+        assertThat(log).hasNoWarn("test message")
+
+        LOG.warn("test message")
+
+        assertThatThrownBy { assertThat(log).hasNoWarn("test message") }
+                .isInstanceOf(AssertionError::class.java)
+                .hasMessage("\nExpecting:\n"
+                        + " <\"[WARN] test message\">\n"
+                        + "not to contain:\n"
+                        + " <\"[WARN] test message\"> ")
+    }
+
+    @Test
+    fun shouldAssertNoWarnEventContainingMessages() {
+        assertThat(log).hasNoWarnContaining("test", "message")
+
+        LOG.warn("test message")
+
+        assertThatThrownBy { assertThat(log).hasNoWarnContaining("test", "message") }
+                .isInstanceOf(AssertionError::class.java)
+                .hasMessage("\nExpecting:\n"
+                        + " <\"[WARN] test message\">\n"
+                        + "not to contain:\n"
+                        + " <\"WARN message containing [test, message]\"> ")
+    }
+
+    @Test
+    fun shouldAssertNoWarnEventMatchingMessage() {
+        assertThat(log).hasNoWarnMatching(Regex("test \\w+"))
+
+        LOG.warn("test message")
+
+        assertThatThrownBy { assertThat(log).hasNoWarnMatching(Regex("test \\w+")) }
+                .isInstanceOf(AssertionError::class.java)
+                .hasMessage("\nExpecting:\n"
+                        + " <\"[WARN] test message\">\n"
+                        + "not to contain:\n"
+                        + " <\"WARN message matching: test \\w+\"> ")
     }
 
     @Test
@@ -96,7 +214,66 @@ class LogbackRuleTest {
 
         assertThatThrownBy { assertThat(log).hasNoError() }
                 .isInstanceOf(AssertionError::class.java)
-                .hasMessageContaining("\nExpecting null or empty but was:<")
+                .hasMessage("\nExpecting:\n"
+                        + " <\"[ERROR] test message\">\n"
+                        + "not to contain:\n"
+                        + " <\"[ERROR]\"> ")
+    }
+
+    @Test
+    fun shouldAssertNoErrorEventsMatchingPredicate() {
+        assertThat(log).hasNoError { it.formattedMessage.startsWith("test") }
+
+        LOG.error("test message")
+
+        assertThatThrownBy { assertThat(log).hasNoError { it.formattedMessage.startsWith("test") } }
+                .isInstanceOf(AssertionError::class.java)
+                .hasMessage("\nExpecting:\n"
+                        + " <\"[ERROR] test message\">\n"
+                        + "not to contain:\n"
+                        + " <\"ERROR event matching given predicate\"> ")
+    }
+
+    @Test
+    fun shouldAssertNoErrorEventWithMessage() {
+        assertThat(log).hasNoError("test message")
+
+        LOG.error("test message")
+
+        assertThatThrownBy { assertThat(log).hasNoError("test message") }
+                .isInstanceOf(AssertionError::class.java)
+                .hasMessage("\nExpecting:\n"
+                        + " <\"[ERROR] test message\">\n"
+                        + "not to contain:\n"
+                        + " <\"[ERROR] test message\"> ")
+    }
+
+    @Test
+    fun shouldAssertNoErrorEventContainingMessages() {
+        assertThat(log).hasNoErrorContaining("test", "message")
+
+        LOG.error("test message")
+
+        assertThatThrownBy { assertThat(log).hasNoErrorContaining("test", "message") }
+                .isInstanceOf(AssertionError::class.java)
+                .hasMessage("\nExpecting:\n"
+                        + " <\"[ERROR] test message\">\n"
+                        + "not to contain:\n"
+                        + " <\"ERROR message containing [test, message]\"> ")
+    }
+
+    @Test
+    fun shouldAssertNoErrorEventMatchingMessage() {
+        assertThat(log).hasNoErrorMatching(Regex("test \\w+"))
+
+        LOG.error("test message")
+
+        assertThatThrownBy { assertThat(log).hasNoErrorMatching(Regex("test \\w+")) }
+                .isInstanceOf(AssertionError::class.java)
+                .hasMessage("\nExpecting:\n"
+                        + " <\"[ERROR] test message\">\n"
+                        + "not to contain:\n"
+                        + " <\"ERROR message matching: test \\w+\"> ")
     }
 
     @Test

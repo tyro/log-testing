@@ -31,7 +31,12 @@ abstract class LogRuleAssert<SELF : ListAssert<EVENT>, LEVEL, EVENT>(actual: Lis
     abstract fun hasEventMatching(level: LEVEL, regex: Regex, throwable: Throwable): SELF
     abstract fun hasEventMatching(level: LEVEL, regex: Regex, throwableClass: Class<out Throwable>): SELF
     abstract fun hasEventMatching(level: LEVEL, regex: Regex, throwableClass: KClass<out Throwable>): SELF
-    abstract fun hasNoInfo(): SELF
+    abstract fun hasNoEvent(level: LEVEL): SELF
+    abstract fun hasNoEvent(level: LEVEL, predicate: (EVENT) -> Boolean): SELF
+    abstract fun hasNoEvent(level: LEVEL, message: String): SELF
+    abstract fun hasNoEventContaining(level: LEVEL, vararg messages: String): SELF
+    abstract fun hasNoEventMatching(level: LEVEL, regex: Regex): SELF
+
     abstract fun hasInfo(): SELF
     abstract fun hasInfo(predicate: (EVENT) -> Boolean): SELF
     abstract fun hasInfo(message: String): SELF
@@ -43,7 +48,12 @@ abstract class LogRuleAssert<SELF : ListAssert<EVENT>, LEVEL, EVENT>(actual: Lis
     abstract fun hasInfoMatching(regex: Regex, throwable: Throwable): SELF
     abstract fun hasInfoMatching(regex: Regex, throwableClass: Class<out Throwable>): SELF
     abstract fun hasInfoMatching(regex: Regex, throwableClass: KClass<out Throwable>): SELF
-    abstract fun hasNoWarn(): SELF
+    abstract fun hasNoInfo(): SELF
+    abstract fun hasNoInfo(predicate: (EVENT) -> Boolean): SELF
+    abstract fun hasNoInfo(message: String): SELF
+    abstract fun hasNoInfoContaining(vararg messages: String): SELF
+    abstract fun hasNoInfoMatching(regex: Regex): SELF
+
     abstract fun hasWarn(): SELF
     abstract fun hasWarn(predicate: (EVENT) -> Boolean): SELF
     abstract fun hasWarn(message: String): SELF
@@ -55,7 +65,12 @@ abstract class LogRuleAssert<SELF : ListAssert<EVENT>, LEVEL, EVENT>(actual: Lis
     abstract fun hasWarnMatching(regex: Regex, throwable: Throwable): SELF
     abstract fun hasWarnMatching(regex: Regex, throwableClass: Class<out Throwable>): SELF
     abstract fun hasWarnMatching(regex: Regex, throwableClass: KClass<out Throwable>): SELF
-    abstract fun hasNoError(): SELF
+    abstract fun hasNoWarn(): SELF
+    abstract fun hasNoWarn(predicate: (EVENT) -> Boolean): SELF
+    abstract fun hasNoWarn(message: String): SELF
+    abstract fun hasNoWarnContaining(vararg messages: String): SELF
+    abstract fun hasNoWarnMatching(regex: Regex): SELF
+
     abstract fun hasError(): SELF
     abstract fun hasError(predicate: (EVENT) -> Boolean): SELF
     abstract fun hasError(message: String): SELF
@@ -67,4 +82,9 @@ abstract class LogRuleAssert<SELF : ListAssert<EVENT>, LEVEL, EVENT>(actual: Lis
     abstract fun hasErrorMatching(regex: Regex, throwable: Throwable): SELF
     abstract fun hasErrorMatching(regex: Regex, throwableClass: Class<out Throwable>): SELF
     abstract fun hasErrorMatching(regex: Regex, throwableClass: KClass<out Throwable>): SELF
+    abstract fun hasNoError(): SELF
+    abstract fun hasNoError(predicate: (EVENT) -> Boolean): SELF
+    abstract fun hasNoError(message: String): SELF
+    abstract fun hasNoErrorContaining(vararg messages: String): SELF
+    abstract fun hasNoErrorMatching(regex: Regex): SELF
 }
