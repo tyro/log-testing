@@ -19,7 +19,6 @@ import ch.qos.logback.classic.Level
 import ch.qos.logback.classic.spi.ILoggingEvent
 import ch.qos.logback.classic.spi.ThrowableProxy
 import com.tyro.oss.logtesting.LogRuleAssert
-import org.assertj.core.api.Assertions.registerFormatterForType
 import org.assertj.core.error.ShouldContainCharSequence.shouldContain
 import org.assertj.core.error.ShouldNotContainCharSequence.shouldNotContain
 import org.assertj.core.util.Objects.areEqual
@@ -251,14 +250,14 @@ class LogbackRuleAssert(actual: List<ILoggingEvent>) : LogRuleAssert<LogbackRule
 
     private fun hasEvent(description: String, predicate: (ILoggingEvent) -> Boolean): LogbackRuleAssert {
         if (actual.none(predicate)) {
-            failWithMessage(shouldContain(formatLogMessages(actual).replace("%", "%%"), description.replace("%", "%%")).create())
+            failWithMessage(shouldContain(formatLogEvents(actual).replace("%", "%%"), description.replace("%", "%%")).create())
         }
         return this
     }
 
     private fun hasNoEvent(description: String, predicate: (ILoggingEvent) -> Boolean): LogbackRuleAssert {
         if (actual.any(predicate)) {
-            failWithMessage(shouldNotContain(formatLogMessages(actual).replace("%", "%%"), description.replace("%", "%%")).create())
+            failWithMessage(shouldNotContain(formatLogEvents(actual).replace("%", "%%"), description.replace("%", "%%")).create())
         }
         return this
     }
@@ -281,20 +280,17 @@ class LogbackRuleAssert(actual: List<ILoggingEvent>) : LogRuleAssert<LogbackRule
     private fun withMessageMatching(regex: Regex): (ILoggingEvent) -> Boolean =
             { event: ILoggingEvent -> event.formattedMessage.matches(regex) }
 
-    private fun formatLogMessages(events: List<ILoggingEvent>): String =
-            events.joinToString("\n") { formatLogMessage(it.level, it.formattedMessage) }
-
     companion object {
 
-        init {
-            registerFormatterForType(ILoggingEvent::class.java) { formatLogMessage(it.level, it.formattedMessage) }
-        }
-
         @JvmStatic
-        fun assertThat(events: List<ILoggingEvent>): LogbackRuleAssert = LogbackRuleAssert(events)
+        fun assertThat(events: List<ILoggingEvent>): LogbackRuleAssert = LogbackRuleAssert(events).withRepresentation(LogbackRepresentation())
 
         @JvmStatic
         fun assertThat(rule: LogbackRule): LogbackRuleAssert = assertThat(rule.events)
+
+        fun formatLogEvent(event: ILoggingEvent) = formatLogMessage(event.level, event.formattedMessage)
+
+        fun formatLogEvents(events: List<ILoggingEvent>): String = events.joinToString("\n") { formatLogEvent(it) }
 
         private fun formatLogMessage(level: Level, message: String) = "[$level] $message"
     }

@@ -18,7 +18,6 @@ package com.tyro.oss.logtesting.log4j
 import com.tyro.oss.logtesting.LogRuleAssert
 import org.apache.log4j.Level
 import org.apache.log4j.spi.LoggingEvent
-import org.assertj.core.api.Assertions.registerFormatterForType
 import org.assertj.core.error.ShouldContainCharSequence.shouldContain
 import org.assertj.core.error.ShouldNotContainCharSequence.shouldNotContain
 import org.assertj.core.util.Objects.areEqual
@@ -250,14 +249,14 @@ class Log4jRuleAssert(actual: List<LoggingEvent>) : LogRuleAssert<Log4jRuleAsser
 
     private fun hasEvent(description: String, predicate: (LoggingEvent) -> Boolean): Log4jRuleAssert {
         if (!actual.any(predicate)) {
-            failWithMessage(shouldContain(formatLogMessages(actual).replace("%", "%%"), description.replace("%", "%%")).create())
+            failWithMessage(shouldContain(formatLogEvents(actual).replace("%", "%%"), description.replace("%", "%%")).create())
         }
         return this
     }
 
     private fun hasNoEvent(description: String, predicate: (LoggingEvent) -> Boolean): Log4jRuleAssert {
         if (actual.any(predicate)) {
-            failWithMessage(shouldNotContain(formatLogMessages(actual).replace("%", "%%"), description.replace("%", "%%")).create())
+            failWithMessage(shouldNotContain(formatLogEvents(actual).replace("%", "%%"), description.replace("%", "%%")).create())
         }
         return this
     }
@@ -280,20 +279,17 @@ class Log4jRuleAssert(actual: List<LoggingEvent>) : LogRuleAssert<Log4jRuleAsser
     private fun withMessageMatching(regex: Regex): (LoggingEvent) -> Boolean =
             { event: LoggingEvent -> event.renderedMessage.matches(regex) }
 
-    private fun formatLogMessages(events: List<LoggingEvent>): String =
-            events.joinToString("\n") { formatLogMessage(it.getLevel(), it.renderedMessage) }
-
     companion object {
 
-        init {
-            registerFormatterForType(LoggingEvent::class.java) { formatLogMessage(it.getLevel(), it.renderedMessage) }
-        }
-
         @JvmStatic
-        fun assertThat(events: List<LoggingEvent>): Log4jRuleAssert = Log4jRuleAssert(events)
+        fun assertThat(events: List<LoggingEvent>): Log4jRuleAssert = Log4jRuleAssert(events).withRepresentation(Log4jRepresentation())
 
         @JvmStatic
         fun assertThat(rule: Log4jRule): Log4jRuleAssert = assertThat(rule.events)
+
+        fun formatLogEvent(event: LoggingEvent) = formatLogMessage(event.getLevel(), event.renderedMessage)
+
+        fun formatLogEvents(events: List<LoggingEvent>): String = events.joinToString("\n") { formatLogEvent(it) }
 
         private fun formatLogMessage(level: Level, message: String = "") = "[$level] $message"
     }

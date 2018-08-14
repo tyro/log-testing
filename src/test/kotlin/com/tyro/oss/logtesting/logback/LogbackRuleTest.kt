@@ -52,7 +52,7 @@ class LogbackRuleTest {
 
         assertThatThrownBy { assertThat(log).hasSize(4) }
                 .isInstanceOf(AssertionError::class.java)
-                .hasMessageContaining("\nExpected size:<4> but was:<3> in:\n<[[INFO] test message 1, [INFO] test message 2, [INFO] test message 3]>")
+                .hasMessageContaining("\nExpected size:<4> but was:<3> in:\n<[INFO] test message 1\n[INFO] test message 2\n[INFO] test message 3>")
     }
 
     @Test
@@ -63,7 +63,7 @@ class LogbackRuleTest {
 
         assertThatThrownBy { assertThat(log).isEmpty() }
                 .isInstanceOf(AssertionError::class.java)
-                .hasMessageContaining("\nExpecting empty but was:<[[INFO] test message]>")
+                .hasMessageContaining("\nExpecting empty but was:<[INFO] test message>")
     }
 
     @Test
