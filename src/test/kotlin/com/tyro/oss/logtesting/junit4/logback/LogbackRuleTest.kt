@@ -16,7 +16,7 @@
 package com.tyro.oss.logtesting.junit4.logback
 
 import ch.qos.logback.classic.Level
-import com.tyro.oss.logtesting.junit4.logback.LogbackRuleAssert.Companion.assertThat
+import com.tyro.oss.logtesting.junit4.logback.LogbackAssert.Companion.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.Rule
 import org.junit.Test

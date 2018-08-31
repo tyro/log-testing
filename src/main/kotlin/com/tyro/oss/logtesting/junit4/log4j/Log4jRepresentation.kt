@@ -1,7 +1,7 @@
 package com.tyro.oss.logtesting.junit4.log4j
 
-import com.tyro.oss.logtesting.junit4.log4j.Log4jRuleAssert.Companion.formatLogEvent
-import com.tyro.oss.logtesting.junit4.log4j.Log4jRuleAssert.Companion.formatLogEvents
+import com.tyro.oss.logtesting.junit4.log4j.Log4jAssert.Companion.formatLogEvent
+import com.tyro.oss.logtesting.junit4.log4j.Log4jAssert.Companion.formatLogEvents
 import org.apache.log4j.spi.LoggingEvent
 import org.assertj.core.presentation.StandardRepresentation
 

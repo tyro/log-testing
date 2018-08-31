@@ -24,238 +24,238 @@ import org.assertj.core.error.ShouldNotContainCharSequence.shouldNotContain
 import org.assertj.core.util.Objects.areEqual
 import kotlin.reflect.KClass
 
-class LogbackRuleAssert(actual: List<ILoggingEvent>) : LogRuleAssert<LogbackRuleAssert, Level, ILoggingEvent>(actual) {
+class LogbackAssert(actual: List<ILoggingEvent>) : LogRuleAssert<LogbackAssert, Level, ILoggingEvent>(actual) {
 
-    override fun hasInfo(): LogbackRuleAssert =
+    override fun hasInfo(): LogbackAssert =
             hasEvent(Level.INFO)
 
-    override fun hasInfo(predicate: (ILoggingEvent) -> Boolean): LogbackRuleAssert =
+    override fun hasInfo(predicate: (ILoggingEvent) -> Boolean): LogbackAssert =
             hasEvent(Level.INFO, predicate)
 
-    override fun hasInfo(message: String): LogbackRuleAssert =
+    override fun hasInfo(message: String): LogbackAssert =
             hasEvent(Level.INFO, message)
 
-    override fun hasInfo(message: String, throwable: Throwable): LogbackRuleAssert =
+    override fun hasInfo(message: String, throwable: Throwable): LogbackAssert =
             hasEvent(Level.INFO, message, throwable)
 
-    override fun hasInfo(message: String, throwableClass: Class<out Throwable>): LogbackRuleAssert =
+    override fun hasInfo(message: String, throwableClass: Class<out Throwable>): LogbackAssert =
             hasEvent(Level.INFO, message, throwableClass)
 
-    override fun hasInfo(message: String, throwableClass: KClass<out Throwable>): LogbackRuleAssert =
+    override fun hasInfo(message: String, throwableClass: KClass<out Throwable>): LogbackAssert =
             hasEvent(Level.INFO, message, throwableClass)
 
-    override fun hasInfoContaining(vararg messages: String): LogbackRuleAssert =
+    override fun hasInfoContaining(vararg messages: String): LogbackAssert =
             hasEventContaining(Level.INFO, *messages)
 
-    override fun hasInfoMatching(regex: Regex): LogbackRuleAssert =
+    override fun hasInfoMatching(regex: Regex): LogbackAssert =
             hasEventMatching(Level.INFO, regex)
 
-    override fun hasInfoMatching(regex: Regex, throwable: Throwable): LogbackRuleAssert =
+    override fun hasInfoMatching(regex: Regex, throwable: Throwable): LogbackAssert =
             hasEventMatching(Level.INFO, regex, throwable)
 
-    override fun hasInfoMatching(regex: Regex, throwableClass: Class<out Throwable>): LogbackRuleAssert =
+    override fun hasInfoMatching(regex: Regex, throwableClass: Class<out Throwable>): LogbackAssert =
             hasEventMatching(Level.INFO, regex, throwableClass)
 
-    override fun hasInfoMatching(regex: Regex, throwableClass: KClass<out Throwable>): LogbackRuleAssert =
+    override fun hasInfoMatching(regex: Regex, throwableClass: KClass<out Throwable>): LogbackAssert =
             hasEventMatching(Level.INFO, regex, throwableClass)
 
-    override fun hasNoInfo(): LogbackRuleAssert =
+    override fun hasNoInfo(): LogbackAssert =
             hasNoEvent(Level.INFO)
 
-    override fun hasNoInfo(predicate: (ILoggingEvent) -> Boolean): LogbackRuleAssert =
+    override fun hasNoInfo(predicate: (ILoggingEvent) -> Boolean): LogbackAssert =
             hasNoEvent(Level.INFO, predicate)
 
-    override fun hasNoInfo(message: String): LogbackRuleAssert =
+    override fun hasNoInfo(message: String): LogbackAssert =
             hasNoEvent(Level.INFO, message)
 
-    override fun hasNoInfoContaining(vararg messages: String): LogbackRuleAssert =
+    override fun hasNoInfoContaining(vararg messages: String): LogbackAssert =
             hasNoEventContaining(Level.INFO, *messages)
 
-    override fun hasNoInfoMatching(regex: Regex): LogbackRuleAssert =
+    override fun hasNoInfoMatching(regex: Regex): LogbackAssert =
             hasNoEventMatching(Level.INFO, regex)
 
-    override fun hasWarn(): LogbackRuleAssert =
+    override fun hasWarn(): LogbackAssert =
             hasEvent(Level.WARN)
 
-    override fun hasWarn(predicate: (ILoggingEvent) -> Boolean): LogbackRuleAssert =
+    override fun hasWarn(predicate: (ILoggingEvent) -> Boolean): LogbackAssert =
             hasEvent(Level.WARN, predicate)
 
-    override fun hasWarn(message: String): LogbackRuleAssert =
+    override fun hasWarn(message: String): LogbackAssert =
             hasEvent(Level.WARN, message)
 
-    override fun hasWarn(message: String, throwable: Throwable): LogbackRuleAssert =
+    override fun hasWarn(message: String, throwable: Throwable): LogbackAssert =
             hasEvent(Level.WARN, message, throwable)
 
-    override fun hasWarn(message: String, throwableClass: Class<out Throwable>): LogbackRuleAssert =
+    override fun hasWarn(message: String, throwableClass: Class<out Throwable>): LogbackAssert =
             hasEvent(Level.WARN, message, throwableClass)
 
-    override fun hasWarn(message: String, throwableClass: KClass<out Throwable>): LogbackRuleAssert =
+    override fun hasWarn(message: String, throwableClass: KClass<out Throwable>): LogbackAssert =
             hasEvent(Level.WARN, message, throwableClass)
 
-    override fun hasWarnContaining(vararg messages: String): LogbackRuleAssert =
+    override fun hasWarnContaining(vararg messages: String): LogbackAssert =
             hasEventContaining(Level.WARN, *messages)
 
-    override fun hasWarnMatching(regex: Regex): LogbackRuleAssert =
+    override fun hasWarnMatching(regex: Regex): LogbackAssert =
             hasEventMatching(Level.WARN, regex)
 
-    override fun hasWarnMatching(regex: Regex, throwable: Throwable): LogbackRuleAssert =
+    override fun hasWarnMatching(regex: Regex, throwable: Throwable): LogbackAssert =
             hasEventMatching(Level.WARN, regex, throwable)
 
-    override fun hasWarnMatching(regex: Regex, throwableClass: Class<out Throwable>): LogbackRuleAssert =
+    override fun hasWarnMatching(regex: Regex, throwableClass: Class<out Throwable>): LogbackAssert =
             hasEventMatching(Level.WARN, regex, throwableClass)
 
-    override fun hasWarnMatching(regex: Regex, throwableClass: KClass<out Throwable>): LogbackRuleAssert =
+    override fun hasWarnMatching(regex: Regex, throwableClass: KClass<out Throwable>): LogbackAssert =
             hasEventMatching(Level.WARN, regex, throwableClass)
 
-    override fun hasNoWarn(): LogbackRuleAssert =
+    override fun hasNoWarn(): LogbackAssert =
             hasNoEvent(Level.WARN)
 
-    override fun hasNoWarn(predicate: (ILoggingEvent) -> Boolean): LogbackRuleAssert =
+    override fun hasNoWarn(predicate: (ILoggingEvent) -> Boolean): LogbackAssert =
             hasNoEvent(Level.WARN, predicate)
 
-    override fun hasNoWarn(message: String): LogbackRuleAssert =
+    override fun hasNoWarn(message: String): LogbackAssert =
             hasNoEvent(Level.WARN, message)
 
-    override fun hasNoWarnContaining(vararg messages: String): LogbackRuleAssert =
+    override fun hasNoWarnContaining(vararg messages: String): LogbackAssert =
             hasNoEventContaining(Level.WARN, *messages)
 
-    override fun hasNoWarnMatching(regex: Regex): LogbackRuleAssert =
+    override fun hasNoWarnMatching(regex: Regex): LogbackAssert =
             hasNoEventMatching(Level.WARN, regex)
 
-    override fun hasError(): LogbackRuleAssert =
+    override fun hasError(): LogbackAssert =
             hasEvent(Level.ERROR)
 
-    override fun hasError(predicate: (ILoggingEvent) -> Boolean): LogbackRuleAssert =
+    override fun hasError(predicate: (ILoggingEvent) -> Boolean): LogbackAssert =
             hasEvent(Level.ERROR, predicate)
 
-    override fun hasError(message: String): LogbackRuleAssert =
+    override fun hasError(message: String): LogbackAssert =
             hasEvent(Level.ERROR, message)
 
-    override fun hasError(message: String, throwable: Throwable): LogbackRuleAssert =
+    override fun hasError(message: String, throwable: Throwable): LogbackAssert =
             hasEvent(Level.ERROR, message, throwable)
 
-    override fun hasError(message: String, throwableClass: Class<out Throwable>): LogbackRuleAssert =
+    override fun hasError(message: String, throwableClass: Class<out Throwable>): LogbackAssert =
             hasEvent(Level.ERROR, message, throwableClass)
 
-    override fun hasError(message: String, throwableClass: KClass<out Throwable>): LogbackRuleAssert =
+    override fun hasError(message: String, throwableClass: KClass<out Throwable>): LogbackAssert =
             hasEvent(Level.ERROR, message, throwableClass)
 
-    override fun hasErrorContaining(vararg messages: String): LogbackRuleAssert =
+    override fun hasErrorContaining(vararg messages: String): LogbackAssert =
             hasEventContaining(Level.ERROR, *messages)
 
-    override fun hasErrorMatching(regex: Regex): LogbackRuleAssert =
+    override fun hasErrorMatching(regex: Regex): LogbackAssert =
             hasEventMatching(Level.ERROR, regex)
 
-    override fun hasErrorMatching(regex: Regex, throwable: Throwable): LogbackRuleAssert =
+    override fun hasErrorMatching(regex: Regex, throwable: Throwable): LogbackAssert =
             hasEventMatching(Level.ERROR, regex, throwable)
 
-    override fun hasErrorMatching(regex: Regex, throwableClass: Class<out Throwable>): LogbackRuleAssert =
+    override fun hasErrorMatching(regex: Regex, throwableClass: Class<out Throwable>): LogbackAssert =
             hasEventMatching(Level.ERROR, regex, throwableClass)
 
-    override fun hasErrorMatching(regex: Regex, throwableClass: KClass<out Throwable>): LogbackRuleAssert =
+    override fun hasErrorMatching(regex: Regex, throwableClass: KClass<out Throwable>): LogbackAssert =
             hasEventMatching(Level.ERROR, regex, throwableClass)
 
-    override fun hasNoError(): LogbackRuleAssert =
+    override fun hasNoError(): LogbackAssert =
             hasNoEvent(Level.ERROR)
 
-    override fun hasNoError(predicate: (ILoggingEvent) -> Boolean): LogbackRuleAssert =
+    override fun hasNoError(predicate: (ILoggingEvent) -> Boolean): LogbackAssert =
             hasNoEvent(Level.ERROR, predicate)
 
-    override fun hasNoError(message: String): LogbackRuleAssert =
+    override fun hasNoError(message: String): LogbackAssert =
             hasNoEvent(Level.ERROR, message)
 
-    override fun hasNoErrorContaining(vararg messages: String): LogbackRuleAssert =
+    override fun hasNoErrorContaining(vararg messages: String): LogbackAssert =
             hasNoEventContaining(Level.ERROR, *messages)
 
-    override fun hasNoErrorMatching(regex: Regex): LogbackRuleAssert =
+    override fun hasNoErrorMatching(regex: Regex): LogbackAssert =
             hasNoEventMatching(Level.ERROR, regex)
 
-    override fun hasEvent(level: Level): LogbackRuleAssert =
+    override fun hasEvent(level: Level): LogbackAssert =
             hasEvent("[$level]",
                 withLevel(level))
 
-    override fun hasEvent(level: Level, predicate: (ILoggingEvent) -> Boolean): LogbackRuleAssert =
+    override fun hasEvent(level: Level, predicate: (ILoggingEvent) -> Boolean): LogbackAssert =
             hasEvent("$level event matching given predicate") {
                 withLevel(level)(it)
                     && predicate(it) }
 
-    override fun hasEvent(level: Level, message: String): LogbackRuleAssert =
+    override fun hasEvent(level: Level, message: String): LogbackAssert =
             hasEvent(formatLogMessage(level, message)) {
                 withLevel(level)(it)
                     && withMessage(message)(it) }
 
-    override fun hasEvent(level: Level, message: String, throwable: Throwable): LogbackRuleAssert =
+    override fun hasEvent(level: Level, message: String, throwable: Throwable): LogbackAssert =
             hasEvent(formatLogMessage(level, message)) {
                 withLevel(level)(it)
                     && withMessage(message)(it)
                     && withThrowable(throwable)(it) }
 
-    override fun hasEvent(level: Level, message: String, throwableClass: Class<out Throwable>): LogbackRuleAssert =
+    override fun hasEvent(level: Level, message: String, throwableClass: Class<out Throwable>): LogbackAssert =
             hasEvent(formatLogMessage(level, message)) {
                 withLevel(level)(it)
                         && withMessage(message)(it)
                         && withThrowableClass(throwableClass)(it) }
 
-    override fun hasEvent(level: Level, message: String, throwableClass: KClass<out Throwable>): LogbackRuleAssert =
+    override fun hasEvent(level: Level, message: String, throwableClass: KClass<out Throwable>): LogbackAssert =
             hasEvent(level, message, throwableClass.java)
 
-    override fun hasEventContaining(level: Level, vararg messages: String): LogbackRuleAssert =
+    override fun hasEventContaining(level: Level, vararg messages: String): LogbackAssert =
             hasEvent("$level message containing ${messages.contentToString()}") {
                 withLevel(level)(it)
                     && withMessageContaining(messages)(it) }
 
-    override fun hasEventMatching(level: Level, regex: Regex): LogbackRuleAssert =
+    override fun hasEventMatching(level: Level, regex: Regex): LogbackAssert =
             hasEvent("$level message matching: $regex") {
                 withLevel(level)(it)
                     && withMessageMatching(regex)(it) }
 
-    override fun hasEventMatching(level: Level, regex: Regex, throwable: Throwable): LogbackRuleAssert =
+    override fun hasEventMatching(level: Level, regex: Regex, throwable: Throwable): LogbackAssert =
             hasEvent("$level message matching: $regex") {
                 withLevel(level)(it)
                     && withMessageMatching(regex)(it)
                     && withThrowable(throwable)(it) }
 
-    override fun hasEventMatching(level: Level, regex: Regex, throwableClass: Class<out Throwable>): LogbackRuleAssert =
+    override fun hasEventMatching(level: Level, regex: Regex, throwableClass: Class<out Throwable>): LogbackAssert =
             hasEvent("$level message matching: $regex") {
                 withLevel(level)(it)
                     && withMessageMatching(regex)(it)
                     && withThrowableClass(throwableClass)(it) }
 
-    override fun hasEventMatching(level: Level, regex: Regex, throwableClass: KClass<out Throwable>): LogbackRuleAssert =
+    override fun hasEventMatching(level: Level, regex: Regex, throwableClass: KClass<out Throwable>): LogbackAssert =
             hasEventMatching(level, regex, throwableClass.java)
 
-    override fun hasNoEvent(level: Level): LogbackRuleAssert =
+    override fun hasNoEvent(level: Level): LogbackAssert =
             hasNoEvent("[$level]",
                     withLevel(level))
 
-    override fun hasNoEvent(level: Level, predicate: (ILoggingEvent) -> Boolean): LogbackRuleAssert =
+    override fun hasNoEvent(level: Level, predicate: (ILoggingEvent) -> Boolean): LogbackAssert =
             hasNoEvent("$level event matching given predicate") {
                 withLevel(level)(it)
                     && predicate(it) }
 
-    override fun hasNoEvent(level: Level, message: String): LogbackRuleAssert =
+    override fun hasNoEvent(level: Level, message: String): LogbackAssert =
             hasNoEvent(formatLogMessage(level, message)) {
                 withLevel(level)(it)
                     && withMessage(message)(it) }
 
-    override fun hasNoEventContaining(level: Level, vararg messages: String): LogbackRuleAssert =
+    override fun hasNoEventContaining(level: Level, vararg messages: String): LogbackAssert =
             hasNoEvent("$level message containing ${messages.contentToString()}") {
                 withLevel(level)(it)
                     && withMessageContaining(messages)(it) }
 
-    override fun hasNoEventMatching(level: Level, regex: Regex): LogbackRuleAssert =
+    override fun hasNoEventMatching(level: Level, regex: Regex): LogbackAssert =
             hasNoEvent("$level message matching: $regex") {
                 withLevel(level)(it)
                     && withMessageMatching(regex)(it) }
 
-    private fun hasEvent(description: String, predicate: (ILoggingEvent) -> Boolean): LogbackRuleAssert {
+    private fun hasEvent(description: String, predicate: (ILoggingEvent) -> Boolean): LogbackAssert {
         if (actual.none(predicate)) {
             failWithMessage(shouldContain(formatLogEvents(actual).replace("%", "%%"), description.replace("%", "%%")).create())
         }
         return this
     }
 
-    private fun hasNoEvent(description: String, predicate: (ILoggingEvent) -> Boolean): LogbackRuleAssert {
+    private fun hasNoEvent(description: String, predicate: (ILoggingEvent) -> Boolean): LogbackAssert {
         if (actual.any(predicate)) {
             failWithMessage(shouldNotContain(formatLogEvents(actual).replace("%", "%%"), description.replace("%", "%%")).create())
         }
@@ -283,10 +283,10 @@ class LogbackRuleAssert(actual: List<ILoggingEvent>) : LogRuleAssert<LogbackRule
     companion object {
 
         @JvmStatic
-        fun assertThat(events: List<ILoggingEvent>): LogbackRuleAssert = LogbackRuleAssert(events).withRepresentation(LogbackRepresentation())
+        fun assertThat(events: List<ILoggingEvent>): LogbackAssert = LogbackAssert(events).withRepresentation(LogbackRepresentation())
 
         @JvmStatic
-        fun assertThat(rule: LogbackRule): LogbackRuleAssert = assertThat(rule.events)
+        fun assertThat(rule: LogbackRule): LogbackAssert = assertThat(rule.events)
 
         fun formatLogEvent(event: ILoggingEvent) = formatLogMessage(event.level, event.formattedMessage)
 
