@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.tyro.oss.logtesting.log4j
+package com.tyro.oss.logtesting.junit4.log4j
 
 import com.tyro.oss.logtesting.LogRuleAssert
 import org.apache.log4j.Level

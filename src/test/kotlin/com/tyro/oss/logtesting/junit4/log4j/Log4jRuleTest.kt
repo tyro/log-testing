@@ -13,21 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.tyro.oss.logtesting.logback
+package com.tyro.oss.logtesting.junit4.log4j
 
-import ch.qos.logback.classic.Level
-import com.tyro.oss.logtesting.logback.LogbackRuleAssert.Companion.assertThat
+import com.tyro.oss.logtesting.junit4.log4j.Log4jRuleAssert.Companion.assertThat
+import org.apache.log4j.Level
+import org.apache.log4j.LogManager
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.Rule
 import org.junit.Test
-import org.slf4j.LoggerFactory
 
-class LogbackRuleTest {
+class Log4jRuleTest {
 
-    private val LOG = LoggerFactory.getLogger(LogbackRuleTest::class.java)
+    private val LOG = LogManager.getLogger(Log4jRuleTest::class.java)
 
     @get:Rule
-    var log = LogbackRule(LogbackRuleTest::class)
+    var log = Log4jRule(Log4jRuleTest::class)
 
     @Test
     fun shouldClearLog() {
@@ -52,7 +52,9 @@ class LogbackRuleTest {
 
         assertThatThrownBy { assertThat(log).hasSize(4) }
                 .isInstanceOf(AssertionError::class.java)
-                .hasMessageContaining("\nExpected size:<4> but was:<3> in:\n<[INFO] test message 1\n[INFO] test message 2\n[INFO] test message 3>")
+                .hasMessageContaining("\nExpected size:<4> but was:<3> in:\n<[INFO] test message 1\n" +
+                        "[INFO] test message 2\n" +
+                        "[INFO] test message 3>")
     }
 
     @Test
@@ -82,11 +84,11 @@ class LogbackRuleTest {
 
     @Test
     fun shouldAssertNoInfoEventsMatchingPredicate() {
-        assertThat(log).hasNoInfo { it.formattedMessage.startsWith("test") }
+        assertThat(log).hasNoInfo { it.renderedMessage.startsWith("test") }
 
         LOG.info("test message")
 
-        assertThatThrownBy { assertThat(log).hasNoInfo { it.formattedMessage.startsWith("test") } }
+        assertThatThrownBy { assertThat(log).hasNoInfo { it.renderedMessage.startsWith("test") } }
                 .isInstanceOf(AssertionError::class.java)
                 .hasMessage("\nExpecting:\n"
                         + " <\"[INFO] test message\">\n"
@@ -152,11 +154,11 @@ class LogbackRuleTest {
 
     @Test
     fun shouldAssertNoWarnEventsMatchingPredicate() {
-        assertThat(log).hasNoWarn { it.formattedMessage.startsWith("test") }
+        assertThat(log).hasNoWarn { it.renderedMessage.startsWith("test") }
 
         LOG.warn("test message")
 
-        assertThatThrownBy { assertThat(log).hasNoWarn { it.formattedMessage.startsWith("test") } }
+        assertThatThrownBy { assertThat(log).hasNoWarn { it.renderedMessage.startsWith("test") } }
                 .isInstanceOf(AssertionError::class.java)
                 .hasMessage("\nExpecting:\n"
                         + " <\"[WARN] test message\">\n"
@@ -222,11 +224,11 @@ class LogbackRuleTest {
 
     @Test
     fun shouldAssertNoErrorEventsMatchingPredicate() {
-        assertThat(log).hasNoError { it.formattedMessage.startsWith("test") }
+        assertThat(log).hasNoError { it.renderedMessage.startsWith("test") }
 
         LOG.error("test message")
 
-        assertThatThrownBy { assertThat(log).hasNoError { it.formattedMessage.startsWith("test") } }
+        assertThatThrownBy { assertThat(log).hasNoError { it.renderedMessage.startsWith("test") } }
                 .isInstanceOf(AssertionError::class.java)
                 .hasMessage("\nExpecting:\n"
                         + " <\"[ERROR] test message\">\n"
@@ -296,7 +298,7 @@ class LogbackRuleTest {
 
         assertThat(log)
                 .hasEvent(Level.DEBUG)
-                .hasEvent(Level.DEBUG) { it.message.isNotEmpty() }
+                .hasEvent(Level.DEBUG) { it.renderedMessage.isNotEmpty() }
                 .hasEvent(Level.DEBUG, expectedMessage)
                 .hasEvent(Level.DEBUG, expectedMessage, expectedException)
                 .hasEvent(Level.DEBUG, expectedMessage, RuntimeException::class.java)
@@ -310,19 +312,18 @@ class LogbackRuleTest {
 
     @Test
     fun shouldCaptureInfoLogEvents() {
-        val expectedException = RuntimeException("test exception")
+        val expectedException = RuntimeException("expected")
         val expectedMessage = "test message"
 
         LOG.info(expectedMessage, expectedException)
 
         assertThat(log)
                 .hasInfo()
-                .hasInfo { it.message.isNotEmpty() }
+                .hasInfo { it.renderedMessage.isNotEmpty() }
                 .hasInfo(expectedMessage)
                 .hasInfo(expectedMessage, expectedException)
                 .hasInfo(expectedMessage, RuntimeException::class)
                 .hasInfoContaining("test", "message")
-                .hasInfoMatching(Regex("[a-z]+ message"))
                 .hasInfoMatching(Regex("[a-z]+ message"))
                 .hasInfoMatching(Regex("[a-z]+ message"), expectedException)
                 .hasInfoMatching(Regex("[a-z]+ message"), RuntimeException::class)
@@ -330,14 +331,14 @@ class LogbackRuleTest {
 
     @Test
     fun shouldCaptureWarnLogEvents() {
-        val expectedException = RuntimeException("test exception")
+        val expectedException = RuntimeException("expected")
         val expectedMessage = "test message"
 
         LOG.warn(expectedMessage, expectedException)
 
         assertThat(log)
                 .hasWarn()
-                .hasWarn { it.message.isNotEmpty() }
+                .hasWarn { it.renderedMessage.isNotEmpty() }
                 .hasWarn(expectedMessage)
                 .hasWarn(expectedMessage, expectedException)
                 .hasWarn(expectedMessage, RuntimeException::class)
@@ -349,15 +350,15 @@ class LogbackRuleTest {
     }
 
     @Test
-    fun shouldCaptureWarnErrorEvents() {
-        val expectedException = RuntimeException("test exception")
+    fun shouldCaptureErrorLogEvents() {
+        val expectedException = RuntimeException("expected")
         val expectedMessage = "test message"
 
         LOG.error(expectedMessage, expectedException)
 
         assertThat(log)
                 .hasError()
-                .hasError { it.message.isNotEmpty() }
+                .hasError { it.renderedMessage.isNotEmpty() }
                 .hasError(expectedMessage)
                 .hasError(expectedMessage, expectedException)
                 .hasError(expectedMessage, RuntimeException::class)
@@ -384,7 +385,7 @@ class LogbackRuleTest {
     fun shouldFailAssertionWhenPredicateDoesNotMatch() {
         LOG.info("test message")
 
-        assertThatThrownBy { assertThat(log).hasInfo { it.message.isEmpty() } }
+        assertThatThrownBy { assertThat(log).hasInfo { it.renderedMessage.isEmpty() } }
                 .isInstanceOf(AssertionError::class.java)
                 .hasMessage("\nExpecting:\n"
                         + " <\"[INFO] test message\">\n"
@@ -405,7 +406,7 @@ class LogbackRuleTest {
     }
 
     @Test
-    fun shouldCorrectlyConstructFauilureMessageWithPercentage() {
+    fun shouldCorrectlyConstructFailureMessageWithPercentage() {
         LOG.info("test message %")
 
         assertThatThrownBy { assertThat(log).hasInfo("other message %") }

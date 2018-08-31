@@ -1,8 +1,8 @@
-package com.tyro.oss.logtesting.logback
+package com.tyro.oss.logtesting.junit4.logback
 
 import ch.qos.logback.classic.spi.ILoggingEvent
-import com.tyro.oss.logtesting.logback.LogbackRuleAssert.Companion.formatLogEvent
-import com.tyro.oss.logtesting.logback.LogbackRuleAssert.Companion.formatLogEvents
+import com.tyro.oss.logtesting.junit4.logback.LogbackRuleAssert.Companion.formatLogEvent
+import com.tyro.oss.logtesting.junit4.logback.LogbackRuleAssert.Companion.formatLogEvents
 import org.assertj.core.presentation.StandardRepresentation
 
 class LogbackRepresentation : StandardRepresentation() {

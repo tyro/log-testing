@@ -13,56 +13,51 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.tyro.oss.logtesting.log4j
+package com.tyro.oss.logtesting.junit4.logback
 
-import com.tyro.oss.logtesting.LogRule
-import org.apache.log4j.AppenderSkeleton
-import org.apache.log4j.LogManager
-import org.apache.log4j.Logger
-import org.apache.log4j.spi.LoggingEvent
+import ch.qos.logback.classic.Logger
+import ch.qos.logback.classic.spi.ILoggingEvent
+import ch.qos.logback.core.AppenderBase
+import com.tyro.oss.logtesting.junit4.LogRule
+import org.slf4j.LoggerFactory
 import kotlin.reflect.KClass
 
-class Log4jRule : LogRule<LoggingEvent> {
+class LogbackRule : LogRule<ILoggingEvent> {
 
     private val logger: Logger
     private lateinit var appender: CapturingAppender
 
     constructor(loggerClass: KClass<*>) {
-        logger = LogManager.getLogger(loggerClass.java)
+        logger = LoggerFactory.getLogger(loggerClass.java) as Logger
     }
 
     constructor(loggerClass: Class<*>) {
-        logger = LogManager.getLogger(loggerClass)
+        logger = LoggerFactory.getLogger(loggerClass) as Logger
     }
 
     constructor(loggerName: String) {
-        logger = LogManager.getLogger(loggerName)
+        logger = LoggerFactory.getLogger(loggerName) as Logger
     }
 
     override fun before() {
         appender = CapturingAppender()
+        appender.start()
         logger.addAppender(appender)
     }
 
     override fun after() {
-        logger.removeAppender(appender)
+        logger.detachAppender(appender)
     }
 
-    override val events: MutableList<LoggingEvent>
+    override val events: MutableList<ILoggingEvent>
         get() = appender.events
 
-    private class CapturingAppender : AppenderSkeleton() {
+    private class CapturingAppender : AppenderBase<ILoggingEvent>() {
 
-        val events = ArrayList<LoggingEvent>()
+        val events = ArrayList<ILoggingEvent>()
 
-        override fun append(event: LoggingEvent) {
+        override fun append(event: ILoggingEvent) {
             events.add(event)
-        }
-
-        override fun close() {}
-
-        override fun requiresLayout(): Boolean {
-            return false
         }
     }
 }

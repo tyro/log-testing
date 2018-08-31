@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.tyro.oss.logtesting
+package com.tyro.oss.logtesting.junit4
 
 import org.junit.rules.ExternalResource
 
