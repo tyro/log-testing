@@ -18,13 +18,13 @@ package com.tyro.oss.logtesting.junit4.logback
 import ch.qos.logback.classic.Level
 import ch.qos.logback.classic.spi.ILoggingEvent
 import ch.qos.logback.classic.spi.ThrowableProxy
-import com.tyro.oss.logtesting.LogRuleAssert
+import com.tyro.oss.logtesting.LogAssert
 import org.assertj.core.error.ShouldContainCharSequence.shouldContain
 import org.assertj.core.error.ShouldNotContainCharSequence.shouldNotContain
 import org.assertj.core.util.Objects.areEqual
 import kotlin.reflect.KClass
 
-class LogbackAssert(actual: List<ILoggingEvent>) : LogRuleAssert<LogbackAssert, Level, ILoggingEvent>(actual) {
+class LogbackAssert(actual: List<ILoggingEvent>) : LogAssert<LogbackAssert, Level, ILoggingEvent>(actual) {
 
     override fun hasInfo(): LogbackAssert =
             hasEvent(Level.INFO)

@@ -18,7 +18,7 @@ package com.tyro.oss.logtesting
 import org.junit.jupiter.api.extension.AfterEachCallback
 import org.junit.jupiter.api.extension.BeforeEachCallback
 
-abstract class LogRule<T> : BeforeEachCallback, AfterEachCallback {
+abstract class LogCaptor<T> : BeforeEachCallback, AfterEachCallback {
 
     abstract val events: MutableList<T>
 

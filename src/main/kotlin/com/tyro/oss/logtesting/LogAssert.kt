@@ -20,8 +20,8 @@ import org.assertj.core.api.ObjectAssert
 import org.assertj.core.api.ObjectAssertFactory
 import kotlin.reflect.KClass
 
-abstract class LogRuleAssert<SELF : LogRuleAssert<SELF, LEVEL, EVENT>, LEVEL, EVENT>(actual: List<EVENT>)
-    : FactoryBasedNavigableListAssert<SELF, List<EVENT>, EVENT, ObjectAssert<EVENT>>(actual, LogRuleAssert::class.java, ObjectAssertFactory<EVENT>()) {
+abstract class LogAssert<SELF : LogAssert<SELF, LEVEL, EVENT>, LEVEL, EVENT>(actual: List<EVENT>)
+    : FactoryBasedNavigableListAssert<SELF, List<EVENT>, EVENT, ObjectAssert<EVENT>>(actual, LogAssert::class.java, ObjectAssertFactory<EVENT>()) {
 
     abstract fun hasEvent(level: LEVEL): SELF
     abstract fun hasEvent(level: LEVEL, predicate: (EVENT) -> Boolean): SELF

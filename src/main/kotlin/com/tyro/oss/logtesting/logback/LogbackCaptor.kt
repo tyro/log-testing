@@ -18,12 +18,12 @@ package com.tyro.oss.logtesting.logback
 import ch.qos.logback.classic.Logger
 import ch.qos.logback.classic.spi.ILoggingEvent
 import ch.qos.logback.core.AppenderBase
-import com.tyro.oss.logtesting.LogRule
+import com.tyro.oss.logtesting.LogCaptor
 import org.junit.jupiter.api.extension.ExtensionContext
 import org.slf4j.LoggerFactory
 import kotlin.reflect.KClass
 
-class LogbackRule : LogRule<ILoggingEvent> {
+class LogbackCaptor : LogCaptor<ILoggingEvent> {
 
     private val logger: Logger
     private lateinit var appender: CapturingAppender
