@@ -15,7 +15,7 @@
  */
 package com.tyro.oss.logtesting.log4j
 
-import com.tyro.oss.logtesting.LogRule
+import com.tyro.oss.logtesting.LogCaptor
 import org.apache.log4j.AppenderSkeleton
 import org.apache.log4j.LogManager
 import org.apache.log4j.Logger
@@ -23,7 +23,7 @@ import org.apache.log4j.spi.LoggingEvent
 import org.junit.jupiter.api.extension.ExtensionContext
 import kotlin.reflect.KClass
 
-class Log4jRule : LogRule<LoggingEvent> {
+class Log4jCaptor : LogCaptor<LoggingEvent> {
 
     private val logger: Logger
     private lateinit var appender: CapturingAppender

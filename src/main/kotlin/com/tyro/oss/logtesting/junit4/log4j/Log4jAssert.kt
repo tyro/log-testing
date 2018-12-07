@@ -15,7 +15,7 @@
  */
 package com.tyro.oss.logtesting.junit4.log4j
 
-import com.tyro.oss.logtesting.LogRuleAssert
+import com.tyro.oss.logtesting.LogAssert
 import org.apache.log4j.Level
 import org.apache.log4j.spi.LoggingEvent
 import org.assertj.core.error.ShouldContainCharSequence.shouldContain
@@ -23,7 +23,7 @@ import org.assertj.core.error.ShouldNotContainCharSequence.shouldNotContain
 import org.assertj.core.util.Objects.areEqual
 import kotlin.reflect.KClass
 
-class Log4jAssert(actual: List<LoggingEvent>) : LogRuleAssert<Log4jAssert, Level, LoggingEvent>(actual) {
+class Log4jAssert(actual: List<LoggingEvent>) : LogAssert<Log4jAssert, Level, LoggingEvent>(actual) {
 
     override fun hasInfo(): Log4jAssert =
             hasEvent(Level.INFO)
