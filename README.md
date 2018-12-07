@@ -1,6 +1,45 @@
 # log-testing
 
+[![Download](https://maven-badges.herokuapp.com/maven-central/com.tyro.oss/log-testing/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.tyro.oss/log-testing)
+
 A simple library for testing log events.
+
+## Getting Started
+
+log-testing is available on Maven Central.
+```xml
+<dependency>
+    <groupId>com.tyro.oss</groupId>
+    <artifactId>log-testing</artifactId>
+    <version>2.1</version>
+    <scope>test</scope>
+</dependency>
+```
+
+A typical test using Logback and JUnit 5 looks like the following. Log4j and JUnit 4 are also supported.
+```kotlin
+import com.tyro.oss.logtesting.logback.LogbackAssert.Companion.assertThat
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.RegisterExtension
+import org.slf4j.LoggerFactory
+
+class ExampleTest {
+
+    private val logger = LoggerFactory.getLogger(ExampleTest::class.java)
+
+    @RegisterExtension
+    val log = LogbackCaptor(ExampleTest::class)
+
+    @Test
+    fun `should log message`() {
+        logger.info("test message")
+
+        assertThat(log)
+                .hasSize(1)
+                .hasInfo("test message")
+    }
+}
+```
 
 ## Copyright and Licensing
 
