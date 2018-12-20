@@ -1,6 +1,8 @@
 # log-testing
 
 [![Download](https://maven-badges.herokuapp.com/maven-central/com.tyro.oss/log-testing/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.tyro.oss/log-testing)
+[![Build Status](https://travis-ci.org/tyro/log-testing.svg?branch=master)](https://travis-ci.org/tyro/log-testing)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
 A simple library for testing log events.
 
