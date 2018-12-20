@@ -26,8 +26,9 @@ class Log4jCaptorTest {
 
     private val logger = LogManager.getLogger(Log4jCaptorTest::class.java)
 
+    @JvmField
     @RegisterExtension
-    var log = Log4jCaptor(Log4jCaptorTest::class)
+    val log = Log4jCaptor(Log4jCaptorTest::class)
 
     @Test
     fun shouldClearLog() {

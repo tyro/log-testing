@@ -27,6 +27,7 @@ class ExampleTest {
 
     private val logger = LoggerFactory.getLogger(ExampleTest::class.java)
 
+    @JvmField
     @RegisterExtension
     val log = LogbackCaptor(ExampleTest::class)
 

@@ -26,8 +26,9 @@ class LogbackCaptorTest {
 
     private val logger = LoggerFactory.getLogger(LogbackCaptorTest::class.java)
 
+    @JvmField
     @RegisterExtension
-    var log = LogbackCaptor(LogbackCaptorTest::class)
+    val log = LogbackCaptor(LogbackCaptorTest::class)
 
     @Test
     fun shouldClearLog() {
