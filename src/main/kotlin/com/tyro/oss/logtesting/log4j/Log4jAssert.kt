@@ -16,6 +16,7 @@
 package com.tyro.oss.logtesting.log4j
 
 import com.tyro.oss.logtesting.LogAssert
+import com.tyro.oss.logtesting.formatLogMessage
 import org.apache.log4j.Level
 import org.apache.log4j.spi.LoggingEvent
 import org.assertj.core.error.ShouldContainCharSequence.shouldContain
@@ -170,7 +171,7 @@ class Log4jAssert(actual: List<LoggingEvent>) : LogAssert<Log4jAssert, Level, Lo
             hasNoEventMatching(Level.ERROR, regex)
 
     override fun hasEvent(level: Level): Log4jAssert =
-            hasEvent("[$level]",
+            hasEvent(formatLogMessage(level),
                 withLevel(level))
 
     override fun hasEvent(level: Level, predicate: (LoggingEvent) -> Boolean): Log4jAssert =
@@ -184,13 +185,13 @@ class Log4jAssert(actual: List<LoggingEvent>) : LogAssert<Log4jAssert, Level, Lo
                     && withMessage(message)(it) }
 
     override fun hasEvent(level: Level, message: String, throwable: Throwable): Log4jAssert =
-            hasEvent(formatLogMessage(level, message)) {
+            hasEvent(formatLogMessage(level, message, throwable)) {
                 withLevel(level)(it)
                     && withMessage(message)(it)
                     && withThrowable(throwable)(it) }
 
     override fun hasEvent(level: Level, message: String, throwableClass: Class<out Throwable>): Log4jAssert =
-            hasEvent(formatLogMessage(level, message)) {
+            hasEvent(formatLogMessage(level, message, throwableClass = throwableClass)) {
                 withLevel(level)(it)
                     && withMessage(message)(it)
                     && withThrowableClass(throwableClass)(it) }
@@ -224,7 +225,7 @@ class Log4jAssert(actual: List<LoggingEvent>) : LogAssert<Log4jAssert, Level, Lo
             hasEventMatching(level, regex, throwableClass.java)
 
     override fun hasNoEvent(level: Level): Log4jAssert =
-            hasNoEvent("[$level]",
+            hasNoEvent(formatLogMessage(level),
                     withLevel(level))
 
     override fun hasNoEvent(level: Level, predicate: (LoggingEvent) -> Boolean): Log4jAssert =
@@ -287,10 +288,11 @@ class Log4jAssert(actual: List<LoggingEvent>) : LogAssert<Log4jAssert, Level, Lo
         @JvmStatic
         fun assertThat(logCaptor: Log4jCaptor): Log4jAssert = assertThat(logCaptor.events)
 
-        fun formatLogEvent(event: LoggingEvent) = formatLogMessage(event.getLevel(), event.renderedMessage)
+        fun formatLogEvent(event: LoggingEvent) = formatLogMessage(
+                event.getLevel().toString(),
+                event.renderedMessage,
+                event.throwableInformation?.throwable)
 
         fun formatLogEvents(events: List<LoggingEvent>): String = events.joinToString("\n") { formatLogEvent(it) }
-
-        private fun formatLogMessage(level: Level, message: String = "") = "[$level] $message"
     }
 }

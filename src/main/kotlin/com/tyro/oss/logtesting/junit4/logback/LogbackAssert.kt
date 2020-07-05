@@ -19,6 +19,7 @@ import ch.qos.logback.classic.Level
 import ch.qos.logback.classic.spi.ILoggingEvent
 import ch.qos.logback.classic.spi.ThrowableProxy
 import com.tyro.oss.logtesting.LogAssert
+import com.tyro.oss.logtesting.formatLogMessage
 import org.assertj.core.error.ShouldContainCharSequence.shouldContain
 import org.assertj.core.error.ShouldNotContainCharSequence.shouldNotContain
 import org.assertj.core.util.Objects.areEqual
@@ -171,7 +172,7 @@ class LogbackAssert(actual: List<ILoggingEvent>) : LogAssert<LogbackAssert, Leve
             hasNoEventMatching(Level.ERROR, regex)
 
     override fun hasEvent(level: Level): LogbackAssert =
-            hasEvent("[$level]",
+            hasEvent(formatLogMessage(level),
                 withLevel(level))
 
     override fun hasEvent(level: Level, predicate: (ILoggingEvent) -> Boolean): LogbackAssert =
@@ -185,13 +186,13 @@ class LogbackAssert(actual: List<ILoggingEvent>) : LogAssert<LogbackAssert, Leve
                     && withMessage(message)(it) }
 
     override fun hasEvent(level: Level, message: String, throwable: Throwable): LogbackAssert =
-            hasEvent(formatLogMessage(level, message)) {
+            hasEvent(formatLogMessage(level, message, throwable)) {
                 withLevel(level)(it)
                     && withMessage(message)(it)
                     && withThrowable(throwable)(it) }
 
     override fun hasEvent(level: Level, message: String, throwableClass: Class<out Throwable>): LogbackAssert =
-            hasEvent(formatLogMessage(level, message)) {
+            hasEvent(formatLogMessage(level, message, throwableClass = throwableClass)) {
                 withLevel(level)(it)
                         && withMessage(message)(it)
                         && withThrowableClass(throwableClass)(it) }
@@ -225,7 +226,7 @@ class LogbackAssert(actual: List<ILoggingEvent>) : LogAssert<LogbackAssert, Leve
             hasEventMatching(level, regex, throwableClass.java)
 
     override fun hasNoEvent(level: Level): LogbackAssert =
-            hasNoEvent("[$level]",
+            hasNoEvent(formatLogMessage(level),
                     withLevel(level))
 
     override fun hasNoEvent(level: Level, predicate: (ILoggingEvent) -> Boolean): LogbackAssert =
@@ -288,10 +289,11 @@ class LogbackAssert(actual: List<ILoggingEvent>) : LogAssert<LogbackAssert, Leve
         @JvmStatic
         fun assertThat(rule: LogbackRule): LogbackAssert = assertThat(rule.events)
 
-        fun formatLogEvent(event: ILoggingEvent) = formatLogMessage(event.level, event.formattedMessage)
+        fun formatLogEvent(event: ILoggingEvent) = formatLogMessage(
+                event.level,
+                event.formattedMessage,
+                event.throwableProxy?.let { (it as ThrowableProxy).throwable })
 
         fun formatLogEvents(events: List<ILoggingEvent>): String = events.joinToString("\n") { formatLogEvent(it) }
-
-        private fun formatLogMessage(level: Level, message: String) = "[$level] $message"
     }
 }

@@ -440,7 +440,8 @@ class Log4jRuleTest {
                         + "Expecting:\n"
                         + " <\"[INFO] test message\">\n"
                         + "to contain:\n"
-                        + " <\"[INFO] test message\"> ")
+                        + " <\"[INFO] test message"
+                        + "\njava.lang.RuntimeException: error\"> ")
     }
 
     @Test
@@ -453,7 +454,8 @@ class Log4jRuleTest {
                         + "Expecting:\n"
                         + " <\"[INFO] test message\">\n"
                         + "to contain:\n"
-                        + " <\"[INFO] test message\"> ")
+                        + " <\"[INFO] test message\n"
+                        + "java.lang.RuntimeException\"> ")
     }
 
     @Test

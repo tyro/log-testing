@@ -434,13 +434,14 @@ class LogbackCaptorTest {
     fun shouldFailAssertionWhenThrowableIsNotFound() {
         logger.info("test message")
 
-        assertThatThrownBy { assertThat(log).hasInfo("test message", RuntimeException()) }
+        assertThatThrownBy { assertThat(log).hasInfo("test message", RuntimeException("error")) }
                 .isInstanceOf(AssertionError::class.java)
                 .hasMessage("\n"
                         + "Expecting:\n"
                         + " <\"[INFO] test message\">\n"
                         + "to contain:\n"
-                        + " <\"[INFO] test message\"> ")
+                        + " <\"[INFO] test message\n"
+                        + "java.lang.RuntimeException: error\"> ")
     }
 
     @Test
@@ -453,7 +454,8 @@ class LogbackCaptorTest {
                         + "Expecting:\n"
                         + " <\"[INFO] test message\">\n"
                         + "to contain:\n"
-                        + " <\"[INFO] test message\"> ")
+                        + " <\"[INFO] test message\n"
+                        + "java.lang.RuntimeException\"> ")
     }
 
     @Test

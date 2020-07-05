@@ -439,7 +439,8 @@ class LogbackRuleTest {
                         + "Expecting:\n"
                         + " <\"[INFO] test message\">\n"
                         + "to contain:\n"
-                        + " <\"[INFO] test message\"> ")
+                        + " <\"[INFO] test message\n"
+                        + "java.lang.RuntimeException: error\"> ")
     }
 
     @Test
@@ -452,7 +453,8 @@ class LogbackRuleTest {
                         + "Expecting:\n"
                         + " <\"[INFO] test message\">\n"
                         + "to contain:\n"
-                        + " <\"[INFO] test message\"> ")
+                        + " <\"[INFO] test message\n"
+                        + "java.lang.RuntimeException\"> ")
     }
 
     @Test
