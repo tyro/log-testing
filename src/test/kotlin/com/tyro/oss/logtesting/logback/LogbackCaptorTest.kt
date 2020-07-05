@@ -406,7 +406,7 @@ class LogbackCaptorTest {
     }
 
     @Test
-    fun shouldCorrectlyConstructFauilureMessageWithPercentage() {
+    fun shouldCorrectlyConstructFailureMessageWithPercentage() {
         logger.info("test message %")
 
         assertThatThrownBy { assertThat(log).hasInfo("other message %") }

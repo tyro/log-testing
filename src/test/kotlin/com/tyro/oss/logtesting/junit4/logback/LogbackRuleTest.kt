@@ -405,7 +405,7 @@ class LogbackRuleTest {
     }
 
     @Test
-    fun shouldCorrectlyConstructFauilureMessageWithPercentage() {
+    fun shouldCorrectlyConstructFailureMessageWithPercentage() {
         LOG.info("test message %")
 
         assertThatThrownBy { assertThat(log).hasInfo("other message %") }
