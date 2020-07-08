@@ -22,7 +22,6 @@ import com.tyro.oss.logtesting.LogAssert
 import com.tyro.oss.logtesting.formatLogMessage
 import org.assertj.core.error.ShouldContainCharSequence.shouldContain
 import org.assertj.core.error.ShouldNotContainCharSequence.shouldNotContain
-import org.assertj.core.util.Objects.areEqual
 import kotlin.reflect.KClass
 
 class LogbackAssert(actual: List<ILoggingEvent>) : LogAssert<LogbackAssert, Level, ILoggingEvent>(actual) {
@@ -264,13 +263,13 @@ class LogbackAssert(actual: List<ILoggingEvent>) : LogAssert<LogbackAssert, Leve
     }
 
     private fun withLevel(level: Level): (ILoggingEvent) -> Boolean =
-            { event -> areEqual(event.level, level) }
+            { event -> event.level == level }
 
     private fun withMessage(message: String): (ILoggingEvent) -> Boolean =
-            { event: ILoggingEvent -> areEqual(event.formattedMessage, message) }
+            { event: ILoggingEvent -> event.formattedMessage == message }
 
     private fun withThrowable(throwable: Throwable): (ILoggingEvent) -> Boolean =
-            { event -> event.throwableProxy != null && areEqual((event.throwableProxy as ThrowableProxy).throwable, throwable) }
+            { event -> event.throwableProxy != null && (event.throwableProxy as ThrowableProxy).throwable == throwable }
 
     private fun withThrowableClass(throwableClass: Class<out Throwable>): (ILoggingEvent) -> Boolean =
             { event -> event.throwableProxy != null && throwableClass.isAssignableFrom((event.throwableProxy as ThrowableProxy).throwable.javaClass) }

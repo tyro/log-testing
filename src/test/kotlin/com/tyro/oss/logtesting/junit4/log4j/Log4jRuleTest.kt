@@ -79,7 +79,7 @@ class Log4jRuleTest {
                 .hasMessage("\nExpecting:\n"
                         + " <\"[INFO] test message\">\n"
                         + "not to contain:\n"
-                        + " <\"[INFO]\"> ")
+                        + " <\"[INFO]\">\n")
     }
 
     @Test
@@ -93,7 +93,7 @@ class Log4jRuleTest {
                 .hasMessage("\nExpecting:\n"
                         + " <\"[INFO] test message\">\n"
                         + "not to contain:\n"
-                        + " <\"INFO event matching given predicate\"> ")
+                        + " <\"INFO event matching given predicate\">\n")
     }
 
     @Test
@@ -107,7 +107,7 @@ class Log4jRuleTest {
                 .hasMessage("\nExpecting:\n"
                         + " <\"[INFO] test message\">\n"
                         + "not to contain:\n"
-                        + " <\"[INFO] test message\"> ")
+                        + " <\"[INFO] test message\">\n")
     }
 
     @Test
@@ -121,7 +121,7 @@ class Log4jRuleTest {
                 .hasMessage("\nExpecting:\n"
                         + " <\"[INFO] test message\">\n"
                         + "not to contain:\n"
-                        + " <\"INFO message containing [test, message]\"> ")
+                        + " <\"INFO message containing [test, message]\">\n")
     }
 
     @Test
@@ -135,7 +135,7 @@ class Log4jRuleTest {
                 .hasMessage("\nExpecting:\n"
                         + " <\"[INFO] test message\">\n"
                         + "not to contain:\n"
-                        + " <\"INFO message matching: test \\w+\"> ")
+                        + " <\"INFO message matching: test \\w+\">\n")
     }
 
     @Test
@@ -149,7 +149,7 @@ class Log4jRuleTest {
                 .hasMessage("\nExpecting:\n"
                         + " <\"[WARN] test message\">\n"
                         + "not to contain:\n"
-                        + " <\"[WARN]\"> ")
+                        + " <\"[WARN]\">\n")
     }
 
     @Test
@@ -163,7 +163,7 @@ class Log4jRuleTest {
                 .hasMessage("\nExpecting:\n"
                         + " <\"[WARN] test message\">\n"
                         + "not to contain:\n"
-                        + " <\"WARN event matching given predicate\"> ")
+                        + " <\"WARN event matching given predicate\">\n")
     }
 
     @Test
@@ -177,7 +177,7 @@ class Log4jRuleTest {
                 .hasMessage("\nExpecting:\n"
                         + " <\"[WARN] test message\">\n"
                         + "not to contain:\n"
-                        + " <\"[WARN] test message\"> ")
+                        + " <\"[WARN] test message\">\n")
     }
 
     @Test
@@ -191,7 +191,7 @@ class Log4jRuleTest {
                 .hasMessage("\nExpecting:\n"
                         + " <\"[WARN] test message\">\n"
                         + "not to contain:\n"
-                        + " <\"WARN message containing [test, message]\"> ")
+                        + " <\"WARN message containing [test, message]\">\n")
     }
 
     @Test
@@ -205,7 +205,7 @@ class Log4jRuleTest {
                 .hasMessage("\nExpecting:\n"
                         + " <\"[WARN] test message\">\n"
                         + "not to contain:\n"
-                        + " <\"WARN message matching: test \\w+\"> ")
+                        + " <\"WARN message matching: test \\w+\">\n")
     }
 
     @Test
@@ -219,7 +219,7 @@ class Log4jRuleTest {
                 .hasMessage("\nExpecting:\n"
                         + " <\"[ERROR] test message\">\n"
                         + "not to contain:\n"
-                        + " <\"[ERROR]\"> ")
+                        + " <\"[ERROR]\">\n")
     }
 
     @Test
@@ -233,7 +233,7 @@ class Log4jRuleTest {
                 .hasMessage("\nExpecting:\n"
                         + " <\"[ERROR] test message\">\n"
                         + "not to contain:\n"
-                        + " <\"ERROR event matching given predicate\"> ")
+                        + " <\"ERROR event matching given predicate\">\n")
     }
 
     @Test
@@ -247,7 +247,7 @@ class Log4jRuleTest {
                 .hasMessage("\nExpecting:\n"
                         + " <\"[ERROR] test message\">\n"
                         + "not to contain:\n"
-                        + " <\"[ERROR] test message\"> ")
+                        + " <\"[ERROR] test message\">\n")
     }
 
     @Test
@@ -261,7 +261,7 @@ class Log4jRuleTest {
                 .hasMessage("\nExpecting:\n"
                         + " <\"[ERROR] test message\">\n"
                         + "not to contain:\n"
-                        + " <\"ERROR message containing [test, message]\"> ")
+                        + " <\"ERROR message containing [test, message]\">\n")
     }
 
     @Test
@@ -275,7 +275,7 @@ class Log4jRuleTest {
                 .hasMessage("\nExpecting:\n"
                         + " <\"[ERROR] test message\">\n"
                         + "not to contain:\n"
-                        + " <\"ERROR message matching: test \\w+\"> ")
+                        + " <\"ERROR message matching: test \\w+\">\n")
     }
 
     @Test
@@ -434,7 +434,7 @@ class Log4jRuleTest {
     fun shouldFailAssertionWhenThrowableIsNotFound() {
         LOG.info("test message")
 
-        assertThatThrownBy { assertThat(log).hasInfo("test message", RuntimeException()) }
+        assertThatThrownBy { assertThat(log).hasInfo("test message", RuntimeException("error")) }
                 .isInstanceOf(AssertionError::class.java)
                 .hasMessage("\n"
                         + "Expecting:\n"
