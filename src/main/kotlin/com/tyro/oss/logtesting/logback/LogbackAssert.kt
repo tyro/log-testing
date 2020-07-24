@@ -19,9 +19,9 @@ import ch.qos.logback.classic.Level
 import ch.qos.logback.classic.spi.ILoggingEvent
 import ch.qos.logback.classic.spi.ThrowableProxy
 import com.tyro.oss.logtesting.LogAssert
+import com.tyro.oss.logtesting.formatLogMessage
 import org.assertj.core.error.ShouldContainCharSequence.shouldContain
 import org.assertj.core.error.ShouldNotContainCharSequence.shouldNotContain
-import org.assertj.core.util.Objects.areEqual
 import kotlin.reflect.KClass
 
 class LogbackAssert(actual: List<ILoggingEvent>) : LogAssert<LogbackAssert, Level, ILoggingEvent>(actual) {
@@ -171,7 +171,7 @@ class LogbackAssert(actual: List<ILoggingEvent>) : LogAssert<LogbackAssert, Leve
             hasNoEventMatching(Level.ERROR, regex)
 
     override fun hasEvent(level: Level): LogbackAssert =
-            hasEvent("[$level]",
+            hasEvent(formatLogMessage(level),
                 withLevel(level))
 
     override fun hasEvent(level: Level, predicate: (ILoggingEvent) -> Boolean): LogbackAssert =
@@ -185,13 +185,13 @@ class LogbackAssert(actual: List<ILoggingEvent>) : LogAssert<LogbackAssert, Leve
                     && withMessage(message)(it) }
 
     override fun hasEvent(level: Level, message: String, throwable: Throwable): LogbackAssert =
-            hasEvent(formatLogMessage(level, message)) {
+            hasEvent(formatLogMessage(level, message, throwable)) {
                 withLevel(level)(it)
                     && withMessage(message)(it)
                     && withThrowable(throwable)(it) }
 
     override fun hasEvent(level: Level, message: String, throwableClass: Class<out Throwable>): LogbackAssert =
-            hasEvent(formatLogMessage(level, message)) {
+            hasEvent(formatLogMessage(level, message, throwableClass = throwableClass)) {
                 withLevel(level)(it)
                         && withMessage(message)(it)
                         && withThrowableClass(throwableClass)(it) }
@@ -225,7 +225,7 @@ class LogbackAssert(actual: List<ILoggingEvent>) : LogAssert<LogbackAssert, Leve
             hasEventMatching(level, regex, throwableClass.java)
 
     override fun hasNoEvent(level: Level): LogbackAssert =
-            hasNoEvent("[$level]",
+            hasNoEvent(formatLogMessage(level),
                     withLevel(level))
 
     override fun hasNoEvent(level: Level, predicate: (ILoggingEvent) -> Boolean): LogbackAssert =
@@ -263,13 +263,13 @@ class LogbackAssert(actual: List<ILoggingEvent>) : LogAssert<LogbackAssert, Leve
     }
 
     private fun withLevel(level: Level): (ILoggingEvent) -> Boolean =
-            { event -> areEqual(event.level, level) }
+            { event -> event.level == level }
 
     private fun withMessage(message: String): (ILoggingEvent) -> Boolean =
-            { event: ILoggingEvent -> areEqual(event.formattedMessage, message) }
+            { event: ILoggingEvent -> event.formattedMessage == message }
 
     private fun withThrowable(throwable: Throwable): (ILoggingEvent) -> Boolean =
-            { event -> event.throwableProxy != null && areEqual((event.throwableProxy as ThrowableProxy).throwable, throwable) }
+            { event -> event.throwableProxy != null && (event.throwableProxy as ThrowableProxy).throwable == throwable }
 
     private fun withThrowableClass(throwableClass: Class<out Throwable>): (ILoggingEvent) -> Boolean =
             { event -> event.throwableProxy != null && throwableClass.isAssignableFrom((event.throwableProxy as ThrowableProxy).throwable.javaClass) }
@@ -288,10 +288,11 @@ class LogbackAssert(actual: List<ILoggingEvent>) : LogAssert<LogbackAssert, Leve
         @JvmStatic
         fun assertThat(logCaptor: LogbackCaptor): LogbackAssert = assertThat(logCaptor.events)
 
-        fun formatLogEvent(event: ILoggingEvent) = formatLogMessage(event.level, event.formattedMessage)
+        fun formatLogEvent(event: ILoggingEvent) = formatLogMessage(
+                event.level,
+                event.formattedMessage,
+                event.throwableProxy?.let { (it as ThrowableProxy).throwable })
 
         fun formatLogEvents(events: List<ILoggingEvent>): String = events.joinToString("\n") { formatLogEvent(it) }
-
-        private fun formatLogMessage(level: Level, message: String) = "[$level] $message"
     }
 }
