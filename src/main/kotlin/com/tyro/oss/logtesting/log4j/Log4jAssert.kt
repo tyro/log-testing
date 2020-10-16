@@ -17,6 +17,7 @@ package com.tyro.oss.logtesting.log4j
 
 import com.tyro.oss.logtesting.LogAssert
 import com.tyro.oss.logtesting.formatLogMessage
+import com.tyro.oss.logtesting.junit4.log4j.Log4jRule
 import org.apache.log4j.Level
 import org.apache.log4j.spi.LoggingEvent
 import org.assertj.core.error.ShouldContainCharSequence.shouldContain
@@ -286,6 +287,9 @@ class Log4jAssert(actual: List<LoggingEvent>) : LogAssert<Log4jAssert, Level, Lo
 
         @JvmStatic
         fun assertThat(logCaptor: Log4jCaptor): Log4jAssert = assertThat(logCaptor.events)
+
+        @JvmStatic
+        fun assertThat(rule: Log4jRule): Log4jAssert = assertThat(rule.events)
 
         fun formatLogEvent(event: LoggingEvent) = formatLogMessage(
                 event.getLevel().toString(),
