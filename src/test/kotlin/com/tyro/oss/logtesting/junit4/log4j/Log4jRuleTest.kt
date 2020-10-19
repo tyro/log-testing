@@ -15,7 +15,7 @@
  */
 package com.tyro.oss.logtesting.junit4.log4j
 
-import com.tyro.oss.logtesting.junit4.log4j.Log4jAssert.Companion.assertThat
+import com.tyro.oss.logtesting.log4j.Log4jAssert.Companion.assertThat
 import org.apache.log4j.Level
 import org.apache.log4j.LogManager
 import org.assertj.core.api.Assertions.assertThatThrownBy

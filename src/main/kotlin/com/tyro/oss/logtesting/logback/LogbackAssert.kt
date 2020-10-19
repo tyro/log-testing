@@ -20,6 +20,7 @@ import ch.qos.logback.classic.spi.ILoggingEvent
 import ch.qos.logback.classic.spi.ThrowableProxy
 import com.tyro.oss.logtesting.LogAssert
 import com.tyro.oss.logtesting.formatLogMessage
+import com.tyro.oss.logtesting.junit4.logback.LogbackRule
 import org.assertj.core.error.ShouldContainCharSequence.shouldContain
 import org.assertj.core.error.ShouldNotContainCharSequence.shouldNotContain
 import kotlin.reflect.KClass
@@ -287,6 +288,9 @@ class LogbackAssert(actual: List<ILoggingEvent>) : LogAssert<LogbackAssert, Leve
 
         @JvmStatic
         fun assertThat(logCaptor: LogbackCaptor): LogbackAssert = assertThat(logCaptor.events)
+
+        @JvmStatic
+        fun assertThat(rule: LogbackRule): LogbackAssert = assertThat(rule.events)
 
         fun formatLogEvent(event: ILoggingEvent) = formatLogMessage(
                 event.level,
